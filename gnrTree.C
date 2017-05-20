@@ -1,10 +1,10 @@
 //This is the ROOT program that will take in the 
-//root file, extract some specific entries, and 
-//calculate the bjet, then recombing it to the new root file.
+//root file, extract some specific entries, 
+//calculate the bjet, and normalize the event weight, then recombing it to the new root file.
 //User should modify the path and name of the file to meet his or her own concern.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Author: Maxwell Cui
-//Date: 11.15.2016
+//Date: 5.20.2017
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 void gnr(TFile* inputFile,TString outputName)
@@ -122,11 +122,10 @@ void gnr(TFile* inputFile,TString outputName)
 
   Int_t nentries=(Int_t)oldTree->GetEntries();
 
-  //Calculate bjet, algorithm is from SelOpt.C
+  //Calculate bjet, algorithm is from SelOpt.C provided by Prof. Varnes
   for(Int_t i=0;i<nentries;i++)
     {
       oldTree->GetEntry(i);
-      //cout<<SSee<<endl;
       bj=0;
       if(SSee || SSem || SSmm || eee || eem || emm || mmm)
       	{
@@ -144,7 +143,7 @@ void gnr(TFile* inputFile,TString outputName)
 
   //Working with normalization  
   //
-  float lumi=30;   //Number is from Prof. Varnes
+  Float_t lumi=30;   //Number is from Prof. Varnes
 
   //Declare leaf and branch
   Float_t         weight_mc;
@@ -153,10 +152,10 @@ void gnr(TFile* inputFile,TString outputName)
   //Set branch addresses and brunch pointers
   oldTree->SetBranchAddress("weight_mc", &weight_mc, &b_weight_mc);
 
+  //Get the data...algrithm is from Prof. Varnes
   TH1F *lumInt=new TH1F;
   inputFile->GetObject("hIntLum",lumInt);
-  
-  float mcnorm=lumInt->GetBinContent(1);
+  Float_t mcnorm=lumInt->GetBinContent(1);
   
   //Declare variable for event weight
   Float_t evtWeight;
@@ -165,18 +164,18 @@ void gnr(TFile* inputFile,TString outputName)
   for(Int_t i=0;i<nentries;i++)
     {
       oldTree->GetEntry(i);
-      //evtWeight=0;
       evtWeight=weight_mc*lumi/mcnorm;
       ewBranch->Fill();
     }
 
   //------------------
   newTree->Print();
-  outputFile->Write();
+  newTree->Write();
+
+  outputFile->Close();
 
   delete oldTree;
   delete lumInt;
-  delete outputFile;
 }
 
 void gnrTree()
