@@ -33,6 +33,7 @@ void gnr(TFile* inputFile,TString outputName)
   oldTree->SetBranchStatus("mmm",1);
   oldTree->SetBranchStatus("lep_pt",1);
   oldTree->SetBranchStatus("jet_mv2c20",1);
+  oldTree->SetBranchStatus("weight_mc",1);
 
   //====================Output file==========================
   //
@@ -64,6 +65,7 @@ void gnr(TFile* inputFile,TString outputName)
   Int_t           mmm;
   vector<float>   *lep_pt;
   Float_t         ht;
+
  
   // List of branches
   TBranch        *b_mu;   //!
@@ -83,6 +85,7 @@ void gnr(TFile* inputFile,TString outputName)
   TBranch        *b_mmm;   //!
   TBranch        *b_lep_pt;   //!
   TBranch        *b_ht;   //!
+
 
   //Set object pointer
   el_pt = 0;
@@ -110,11 +113,12 @@ void gnr(TFile* inputFile,TString outputName)
   oldTree->SetBranchAddress("lep_pt", &lep_pt, &b_lep_pt);
   oldTree->SetBranchAddress("ht", &ht, &b_ht);
 
+
   //Declare bjet variable
   Int_t bj;
 
   //Add new branch
-  TBranch *newBranch=newTree->Branch("bj",&bj,"bj/I");
+  TBranch *bjBranch=newTree->Branch("bj",&bj,"bj/I");
 
   Int_t nentries=(Int_t)oldTree->GetEntries();
 
@@ -135,13 +139,43 @@ void gnr(TFile* inputFile,TString outputName)
 	      
       	    }
       	}
-      newBranch->Fill();
+      bjBranch->Fill();
     }
 
+  //Working with normalization  
+  //
+  float lumi=30;   //Number is from Prof. Varnes
+
+  //Declare leaf and branch
+  Float_t         weight_mc;
+  TBranch        *b_weight_mc;   //!
+
+  //Set branch addresses and brunch pointers
+  oldTree->SetBranchAddress("weight_mc", &weight_mc, &b_weight_mc);
+
+  TH1F *lumInt=new TH1F;
+  inputFile->GetObject("hIntLum",lumInt);
+  
+  float mcnorm=lumInt->GetBinContent(1);
+  
+  //Declare variable for event weight
+  Float_t evtWeight;
+  TBranch *ewBranch=newTree->Branch("evtWeight",&evtWeight,"evtWeight/F");
+
+  for(Int_t i=0;i<nentries;i++)
+    {
+      oldTree->GetEntry(i);
+      //evtWeight=0;
+      evtWeight=weight_mc*lumi/mcnorm;
+      ewBranch->Fill();
+    }
+
+  //------------------
   newTree->Print();
   outputFile->Write();
 
   delete oldTree;
+  delete lumInt;
   delete outputFile;
 }
 
