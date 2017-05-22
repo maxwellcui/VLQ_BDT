@@ -46,3 +46,7 @@ Variables that are included in training data (tick indicates in-use variables in
 - [ ] `jet_mv2c20` used for b-jet calculation
 - [ ] `weight_mc`  used for event weight normalization
 
+### BDT Training
+Since TMVA is a tool kit from ROOT, the language of TMVA is C/C++ and works like the usual ROOT operation.
+*This version of the code is only a testing verson. Most of the parameters have not been adjusted yet. 
+Some preliminary results are included.*
