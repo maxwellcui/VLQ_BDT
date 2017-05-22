@@ -52,6 +52,8 @@ Since TMVA is a tool kit from ROOT, the language of TMVA is C/C++ and works like
 *This version of the code is only a testing verson. Most of the parameters have not been adjusted yet. 
 Some preliminary results are included.*
 
+The verbose contains info that are useful. It can be found in here [`BDT_VLQ_data.log`](https://github.com/maxwellcui/VLQ_BDT/blob/Training/BDT_VLQ_data.log)
+
 ![Input variables](https://github.com/maxwellcui/VLQ_BDT/blob/Training/variables_id_c1.png)
 ![Input variables](https://github.com/maxwellcui/VLQ_BDT/blob/Training/variables_id_c2.png)
 ![Input variables](https://github.com/maxwellcui/VLQ_BDT/blob/Training/variables_id_c3.png)
