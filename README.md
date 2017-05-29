@@ -1,7 +1,7 @@
 # Multivariate selection of VLQ events
 - Author: Zhaoyuan "Maxwell" Cui
 - Advisor: Prof. [Erich Varnes](http://w3.physics.arizona.edu/people/erich-varnes)
-- Physics department, University of Arizona
+- Physics department, University of Arizona 
 
 ## Introduction
 This study leverages the TMVA tool kit of ROOT data analysis framework to enhance the search of vector-like quark (VLQ). More about VLQ can be found in the following papers:
