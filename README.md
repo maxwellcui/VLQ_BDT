@@ -54,6 +54,15 @@ Some preliminary results are included.*
 
 The verbose contains info that are useful. It can be found in here [`BDT_VLQ_data.log`](https://github.com/maxwellcui/VLQ_BDT/blob/Training/BDT_VLQ_data.log)
 
+### Parameters in this training code
+All parameters are in default value
+
+- Number of trees: 800
+- Max depth: 3
+- Min node size 5%
+- Number of grid point: 20
+- Boost type: Ada boost
+
 ![Input variables](https://github.com/maxwellcui/VLQ_BDT/blob/Training/variables_id_c1.png)
 ![Input variables](https://github.com/maxwellcui/VLQ_BDT/blob/Training/variables_id_c2.png)
 ![Input variables](https://github.com/maxwellcui/VLQ_BDT/blob/Training/variables_id_c3.png)
