@@ -66,6 +66,7 @@ int bdt_vlq()
   factory->AddVariable("met_phi",'F');
   factory->AddVariable("SSee",'I');
   factory->AddVariable("SSem",'I');
+  factory->AddVariable("SSmm",'I');
   factory->AddVariable("eee",'I');
   factory->AddVariable("eem",'I');
   factory->AddVariable("emm",'I');
@@ -113,7 +114,7 @@ int bdt_vlq()
   //Boosted Decision Tree
 
   factory->BookMethod( TMVA::Types::kBDT, "BDT",
-		       "!H:!V:NTrees=1000:MaxDepth=10:MinNodeSize=2.5%:nCuts=20:NegWeightTreatment=IgnoreNegWeightsInTraining"
+		       "!H:!V:NTrees=1000:MaxDepth=10:MinNodeSize=2.5%:nCuts=20:NegWeightTreatment=IgnoreNegWeightsInTraining:SeparationType=CrossEntropy"
 		       );
 
   factory->TrainAllMethods();
