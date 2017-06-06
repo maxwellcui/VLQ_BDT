@@ -113,7 +113,7 @@ int bdt_vlq()
   //Boosted Decision Tree
 
   factory->BookMethod( TMVA::Types::kBDT, "BDT",
-		       "NTrees=1000:MaxDepth=10:MinNodeSize=2.5%:nCuts=20:NegWeightTreatment=IgnoreNegWeightsInTraining"
+		       "!H:!V:NTrees=1000:MaxDepth=10:MinNodeSize=2.5%:nCuts=20:NegWeightTreatment=IgnoreNegWeightsInTraining"
 		       );
 
   factory->TrainAllMethods();
