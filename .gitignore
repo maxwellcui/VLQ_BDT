@@ -1,5 +1,7 @@
 # Ignore some files
 
-*~
-
-weights/
+*
+!*.C
+!*.txt
+!*.md
+!makefile
