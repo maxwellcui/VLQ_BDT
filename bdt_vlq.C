@@ -113,9 +113,10 @@ int bdt_vlq()
   //
   //Boosted Decision Tree
 
+  TString Option="!H:!V:NTrees=1000:MaxDepth=10:MinNodeSize=2.5%:nCuts=20:NegWeightTreatment=IgnoreNegWeightsInTraining:SeparationType=MisClassificationError";
+
   factory->BookMethod( TMVA::Types::kBDT, "BDT",
-		       "!H:!V:NTrees=1000:MaxDepth=10:MinNodeSize=2.5%:nCuts=20:NegWeightTreatment=IgnoreNegWeightsInTraining:SeparationType=CrossEntropy"
-		       );
+		       Option);
 
   factory->TrainAllMethods();
   factory->TestAllMethods();
