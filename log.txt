@@ -186,25 +186,25 @@ File operation done
 --- BDT                      : as option DoPreselection was not used, these cuts however will not be performed, but the training will see the full sample
 --- BDT                      :  found cut: Bkg if var 14 < 247746
 --- BDT                      :  found cut: Bkg if var 15 < 341927
-[1;31m--- <WARNING> BDT                      :  Note, you have events with negative event weight in the sample, but you've chosen to ignore them[0m
+[1;31m--- <WARNING> BDT                      : Events with negative event weights are USED during the BDT training. This might cause problems with small node sizes or with the boosting. Please remove negative events from training using the option *IgnoreEventsWithNegWeightsInTraining* in case you observe problems with the boosting[0m
 --- BDT                      : <InitEventSample> For classification trees, 
 --- BDT                      :  the effective number of backgrounds is scaled to match 
 --- BDT                      :  the signal. Othersise the first boosting step would do 'just that'!
 --- BDT                      : re-normlise events such that Sig and Bkg have respective sum of weights = 1
---- BDT                      :   sig->sig*2444.07ev. bkg->bkg*483.017ev.
---- BDT                      : #events: (reweighted) sig: 58059.5 bkg: 58059.5
---- BDT                      : #events: (unweighted) sig: 2006 bkg: 114113
---- BDT                      : Training 1000 Decision Trees ... patience please
---- BinaryTree               : The minimal node size MinNodeSize=2.5 fMinNodeSize=2.5% is translated to an actual number of events = 2902.98 for the training sample size of 116119
+--- BDT                      :   sig->sig*2529.99ev. bkg->bkg*522.205ev.
+--- BDT                      : #events: (reweighted) sig: 60100.5 bkg: 60100.5
+--- BDT                      : #events: (unweighted) sig: 2006 bkg: 118195
+--- BDT                      : Training 800 Decision Trees ... patience please
+--- BinaryTree               : The minimal node size MinNodeSize=5 fMinNodeSize=5% is translated to an actual number of events = 2992.55 for the training sample size of 59851
 --- BinaryTree               : Note: This number will be taken as absolute minimum in the node, 
 --- BinaryTree               :       in terms of 'weighted events' and unweighted ones !! 
---- BDT                      : <Train> elapsed time: [1;31m400 sec[0m                              
---- BDT                      : <Train> average number of nodes (w/o pruning) : 17
+--- BDT                      : <Train> elapsed time: [1;31m174 sec[0m                              
+--- BDT                      : <Train> average number of nodes (w/o pruning) : 7
 --- BDT                      : End of training                                              
---- BDT                      : Elapsed time for training with 120201 events: [1;31m401 sec[0m         
+--- BDT                      : Elapsed time for training with 120201 events: [1;31m175 sec[0m         
 --- BDT                      : Create MVA output for classification on training sample
 --- BDT                      : Evaluation of BDT on training sample (120201 events)
---- BDT                      : Elapsed time for evaluation of 120201 events: [1;31m16 sec[0m       
+--- BDT                      : Elapsed time for evaluation of 120201 events: [1;31m8.5 sec[0m       
 --- BDT                      : Creating weight file in xml format: [0;36mweights/BDT_VLQ_BDT.weights.xml[0m
 --- BDT                      : Creating standalone response class: [0;36mweights/BDT_VLQ_BDT.class.C[0m
 --- BDT                      : Write monitoring histograms to file: BDT_VLQ_data.root:/Method_BDT/BDT
@@ -215,19 +215,19 @@ File operation done
 --- BDT                      : --------------------------------------------
 --- BDT                      : Rank : Variable   : Variable Importance
 --- BDT                      : --------------------------------------------
---- BDT                      :    1 : lep_pt.[0] : 1.658e-01
---- BDT                      :    2 : met_phi    : 1.065e-01
---- BDT                      :    3 : met_sumet  : 1.047e-01
---- BDT                      :    4 : ht         : 9.498e-02
---- BDT                      :    5 : mu         : 8.674e-02
---- BDT                      :    6 : met_met    : 8.579e-02
---- BDT                      :    7 : el_pt.[0]  : 8.401e-02
---- BDT                      :    8 : mu_pt.[0]  : 7.123e-02
---- BDT                      :    9 : jet_pt.[0] : 6.349e-02
---- BDT                      :   10 : bj         : 4.727e-02
---- BDT                      :   11 : SSem       : 3.670e-02
---- BDT                      :   12 : eem        : 2.699e-02
---- BDT                      :   13 : emm        : 2.583e-02
+--- BDT                      :    1 : lep_pt.[0] : 1.452e-01
+--- BDT                      :    2 : met_phi    : 1.194e-01
+--- BDT                      :    3 : mu         : 1.013e-01
+--- BDT                      :    4 : met_sumet  : 9.383e-02
+--- BDT                      :    5 : met_met    : 8.071e-02
+--- BDT                      :    6 : el_pt.[0]  : 8.068e-02
+--- BDT                      :    7 : ht         : 7.480e-02
+--- BDT                      :    8 : jet_pt.[0] : 6.555e-02
+--- BDT                      :    9 : mu_pt.[0]  : 6.394e-02
+--- BDT                      :   10 : bj         : 5.992e-02
+--- BDT                      :   11 : SSem       : 5.174e-02
+--- BDT                      :   12 : emm        : 3.459e-02
+--- BDT                      :   13 : eem        : 2.827e-02
 --- BDT                      :   14 : SSee       : 0.000e+00
 --- BDT                      :   15 : SSmm       : 0.000e+00
 --- BDT                      :   16 : eee        : 0.000e+00
@@ -243,7 +243,7 @@ File operation done
 --- Factory                  : Test all methods...
 --- Factory                  : Test method: BDT for Classification performance
 --- BDT                      : Evaluation of BDT on testing sample (120201 events)
---- BDT                      : Elapsed time for evaluation of 120201 events: [1;31m11 sec[0m       
+--- BDT                      : Elapsed time for evaluation of 120201 events: [1;31m5.68 sec[0m       
 --- Factory                  : Evaluate all methods...
 --- Factory                  : Evaluate classifier: BDT
 --- BDT                      : Loop over test events and fill histograms with classifier response...
@@ -496,10 +496,10 @@ File operation done
 --- Factory                  : ----------------
 --- Factory                  :                 BDT
 --- Factory                  :         mu:  +0.000
---- Factory                  :  el_pt.[0]:  +0.319
---- Factory                  :  mu_pt.[0]:  +0.278
---- Factory                  : jet_pt.[0]:  +0.233
---- Factory                  :    met_met:  +0.195
+--- Factory                  :  el_pt.[0]:  +0.369
+--- Factory                  :  mu_pt.[0]:  +0.322
+--- Factory                  : jet_pt.[0]:  +0.232
+--- Factory                  :    met_met:  +0.240
 --- Factory                  :    met_phi:  +0.000
 --- Factory                  :       SSee:  +0.000
 --- Factory                  :       SSem:  +0.000
@@ -508,9 +508,9 @@ File operation done
 --- Factory                  :        eem:  +0.000
 --- Factory                  :        emm:  +0.000
 --- Factory                  :        mmm:  +0.000
---- Factory                  : lep_pt.[0]:  +0.386
---- Factory                  :         ht:  +0.484
---- Factory                  :  met_sumet:  +0.482
+--- Factory                  : lep_pt.[0]:  +0.449
+--- Factory                  :         ht:  +0.450
+--- Factory                  :  met_sumet:  +0.446
 --- Factory                  :         bj:  +0.000
 --- Factory                  : ----------------
 --- Factory                  : 
@@ -518,10 +518,10 @@ File operation done
 --- Factory                  : ----------------
 --- Factory                  :                 BDT
 --- Factory                  :         mu:  +0.000
---- Factory                  :  el_pt.[0]:  +0.466
---- Factory                  :  mu_pt.[0]:  +0.408
---- Factory                  : jet_pt.[0]:  +0.639
---- Factory                  :    met_met:  +0.578
+--- Factory                  :  el_pt.[0]:  +0.521
+--- Factory                  :  mu_pt.[0]:  +0.467
+--- Factory                  : jet_pt.[0]:  +0.716
+--- Factory                  :    met_met:  +0.636
 --- Factory                  :    met_phi:  +0.000
 --- Factory                  :       SSee:  +0.000
 --- Factory                  :       SSem:  +0.000
@@ -530,9 +530,9 @@ File operation done
 --- Factory                  :        eem:  +0.000
 --- Factory                  :        emm:  +0.000
 --- Factory                  :        mmm:  +0.000
---- Factory                  : lep_pt.[0]:  +0.559
---- Factory                  :         ht:  +0.778
---- Factory                  :  met_sumet:  +0.773
+--- Factory                  : lep_pt.[0]:  +0.631
+--- Factory                  :         ht:  +0.850
+--- Factory                  :  met_sumet:  +0.843
 --- Factory                  :         bj:  +0.000
 --- Factory                  : ----------------
 --- Factory                  : 
@@ -542,7 +542,7 @@ File operation done
 --- Factory                  : --------------------
 --- Factory                  :  Method:  Cut value:
 --- Factory                  : --------------------
---- Factory                  :     BDT:     -0.030
+--- Factory                  :     BDT:     -0.064
 --- Factory                  : --------------------
 --- Factory                  : which correspond to the working point: eff(signal) = 1 - eff(background)
 --- Factory                  : 
@@ -551,7 +551,7 @@ File operation done
 --- Factory                  : MVA              Signal efficiency at bkg eff.(error):       | Sepa-    Signifi- 
 --- Factory                  : Method:          @B=0.01    @B=0.10    @B=0.30    ROC-integ. | ration:  cance:   
 --- Factory                  : --------------------------------------------------------------------------------
---- Factory                  : BDT            : 0.351(97)  0.911(58)  0.991(19)    0.963    | 0.723    2.019
+--- Factory                  : BDT            : 0.380(99)  0.927(53)  0.996(12)    0.965    | 0.739    2.203
 --- Factory                  : --------------------------------------------------------------------------------
 --- Factory                  : 
 --- Factory                  : Testing efficiency compared to training efficiency (overtraining check)
@@ -559,7 +559,7 @@ File operation done
 --- Factory                  : MVA              Signal efficiency: from test sample (from training sample) 
 --- Factory                  : Method:          @B=0.01             @B=0.10            @B=0.30   
 --- Factory                  : --------------------------------------------------------------------------------
---- Factory                  : BDT            : 0.351 (0.528)       0.911 (0.924)      0.991 (0.991)
+--- Factory                  : BDT            : 0.380 (0.400)       0.927 (0.931)      0.996 (0.996)
 --- Factory                  : --------------------------------------------------------------------------------
 --- Factory                  : 
 --- Dataset:Default          : Created tree 'TestTree' with 120201 events

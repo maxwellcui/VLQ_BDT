@@ -113,7 +113,8 @@ int bdt_vlq()
   //
   //Boosted Decision Tree
 
-  TString Option="!H:!V:NTrees=1000:MaxDepth=10:MinNodeSize=2.5%:nCuts=20:NegWeightTreatment=IgnoreNegWeightsInTraining:SeparationType=MisClassificationError";
+  //  TString Option="!H:!V:NTrees=1000:MaxDepth=10:MinNodeSize=2.5%:nCuts=20:NegWeightTreatment=IgnoreNegWeightsInTraining:SeparationType=MisClassificationError";
+  TString Option="!H:!V:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex";
 
   factory->BookMethod( TMVA::Types::kBDT, "BDT",
 		       Option);
