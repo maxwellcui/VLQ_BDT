@@ -63,8 +63,8 @@ All parameters are in default value
 - Number of grid point: 20
 - Boost type: Ada boost
 
-![Input variables](https://github.com/maxwellcui/VLQ_BDT/blob/Training/variables_id_c1.png)
-![Input variables](https://github.com/maxwellcui/VLQ_BDT/blob/Training/variables_id_c2.png)
-![Input variables](https://github.com/maxwellcui/VLQ_BDT/blob/Training/variables_id_c3.png)
-![mva_BDT](https://github.com/maxwellcui/VLQ_BDT/blob/Training/mva_BDT.png)
-![overtrain](https://github.com/maxwellcui/VLQ_BDT/blob/Training/overtrain_BDT.png)
+![Input variables](https://github.com/maxwellcui/VLQ_BDT/blob/master/variables_id_c1.png)
+![Input variables](https://github.com/maxwellcui/VLQ_BDT/blob/master/variables_id_c2.png)
+![Input variables](https://github.com/maxwellcui/VLQ_BDT/blob/master/variables_id_c3.png)
+![mva_BDT](https://github.com/maxwellcui/VLQ_BDT/blob/master/mva_BDT.png)
+![overtrain](https://github.com/maxwellcui/VLQ_BDT/blob/master/overtrain_BDT.png)
