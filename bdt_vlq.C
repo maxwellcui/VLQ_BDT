@@ -32,24 +32,24 @@ int bdt_vlq()
   //Read training data
   //
   TString fSig="../normalization/BBS_sig.root";
-  //TString fBkg_VV="../normalization/VV.root";
-  //TString fBkg_VVV="../normalization/VVV.root";
+  TString fBkg_VV="../normalization/VV.root";
+  TString fBkg_VVV="../normalization/VVV.root";
   TString fBkg_ttW_np2="../normalization/ttW_np2_bkg.root";
   TString fBkg_ttW_np1="../normalization/ttW_np1_bkg.root";
   TString fBkg_ttW_np0="../normalization/ttW_np0_bkg.root";
   TString fBkg_ttH="../normalization/ttH.root";
 
   TFile *inputSig=TFile::Open(fSig);
-  //TFile *inputVV=TFile::Open(fBkg_VV);
-  //TFile *inputVVV=TFile::Open(fBkg_VVV);
+  TFile *inputVV=TFile::Open(fBkg_VV);
+  TFile *inputVVV=TFile::Open(fBkg_VVV);
   TFile *inputNP2=TFile::Open(fBkg_ttW_np2);
   TFile *inputNP1=TFile::Open(fBkg_ttW_np1);
   TFile *inputNP0=TFile::Open(fBkg_ttW_np0);
   TFile *inputttH=TFile::Open(fBkg_ttH);
 
   TTree *signal=(TTree*)inputSig->Get("nominal_Loose");
-  //TTree *vv=(TTree*)inputVV->Get("nominal_Loose");
-  //TTree *vvv=(TTree*)inputVVV->Get("nominal_Loose");
+  TTree *vv=(TTree*)inputVV->Get("nominal_Loose");
+  TTree *vvv=(TTree*)inputVVV->Get("nominal_Loose");
   TTree *ttW_np2=(TTree*)inputNP2->Get("nominal_Loose");
   TTree *ttW_np1=(TTree*)inputNP1->Get("nominal_Loose");
   TTree *ttW_np0=(TTree*)inputNP0->Get("nominal_Loose");
@@ -79,8 +79,8 @@ int bdt_vlq()
   std::cout<<" --- BDT_VLQ\tUsing input file: "
 	   <<"\n\t"
 	   <<inputSig->GetName()<<"\n\t"
-    //<<inputVV->GetName()<<"\n\t"
-    //<<inputVVV->GetName()<<"\n\t"
+	   <<inputVV->GetName()<<"\n\t"
+	   <<inputVVV->GetName()<<"\n\t"
 	   <<inputNP2->GetName()<<"\n\t"
 	   <<inputNP1->GetName()<<"\n\t"
 	   <<inputNP0->GetName()<<"\n\t"
@@ -88,16 +88,16 @@ int bdt_vlq()
 
   //Global event weights per tree
   Double_t signalWeight=1.0;
-  //Double_t vvWeight=1.0;
-  //Double_t vvvWeight=1.0;
+  Double_t vvWeight=1.0;
+  Double_t vvvWeight=1.0;
   Double_t ttW_np2Weight=1.0;
   Double_t ttW_np1Weight=1.0;
   Double_t ttW_np0Weight=1.0;
   Double_t ttHWeight=1.0;
 
   factory->AddSignalTree(signal,signalWeight);
-  //factory->AddBackgroundTree(vv,vvWeight);
-  //factory->AddBackgroundTree(vvv,vvvWeight);
+  factory->AddBackgroundTree(vv,vvWeight);
+  factory->AddBackgroundTree(vvv,vvvWeight);
   factory->AddBackgroundTree(ttW_np2,ttW_np2Weight);
   factory->AddBackgroundTree(ttW_np1,ttW_np2Weight);
   factory->AddBackgroundTree(ttW_np0,ttW_np2Weight);
@@ -114,7 +114,9 @@ int bdt_vlq()
   //Boosted Decision Tree
 
   //  TString Option="!H:!V:NTrees=1000:MaxDepth=10:MinNodeSize=2.5%:nCuts=20:NegWeightTreatment=IgnoreNegWeightsInTraining:SeparationType=MisClassificationError";
-  TString Option="!H:!V:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex";
+  //TString Option="!H:!V:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex";
+
+  TString Option="!H:!V:NTrees=400:MinNodeSize=5%:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:VarTransform=Decorrelate"; 
 
   factory->BookMethod( TMVA::Types::kBDT, "BDT",
 		       Option);
