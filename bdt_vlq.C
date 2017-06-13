@@ -113,11 +113,11 @@ int bdt_vlq()
   //
   //Boosted Decision Tree
 
-  TString Option="!H:!V:NTrees=400:MaxDepth=10:MinNodeSize=5%:nCuts=20:NegWeightTreatment=IgnoreNegWeightsInTraining:SeparationType=GiniIndex:BoostType=AdaBoost:VarTransform=Decorrelate";
+  //TString Option="!H:!V:NTrees=400:MaxDepth=10:MinNodeSize=5%:nCuts=20:NegWeightTreatment=IgnoreNegWeightsInTraining:SeparationType=GiniIndex:BoostType=AdaBoost:VarTransform=Decorrelate";
   
   //TString Option="!H:!V:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex";
 
-  //TString Option="!H:!V:NTrees=400:MinNodeSize=5%:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:VarTransform=Decorrelate"; 
+  TString Option="!H:!V:NTrees=400:MinNodeSize=5%:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:VarTransform=Decorrelate"; 
 
   factory->BookMethod( TMVA::Types::kBDT, "BDT",
 		       Option);
