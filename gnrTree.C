@@ -7,6 +7,8 @@
 //Date: 5.20.2017
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+#include<cstdlib>
+
 void gnr(TFile* inputFile,TString outputName)
 {
   TTree *oldTree=new TTree;
@@ -181,39 +183,51 @@ void gnr(TFile* inputFile,TString outputName)
 void gnrTree()
 {
 
+
+  
   //=========================Input file===========================================
   //Signal
-  TFile *s1=new TFile("../data/signal/BBS_M800_302490_sig_2016_25nsTOPQ1.root");
+  //TFile *s1=new TFile("../data/signal/BBS_M800_302490_sig_2016_25nsTOPQ1.root");
   //----------
   //Background
-  TFile *b1=new TFile("../data/background/ttW_np0_410066_bkg_2016_25nsTOPQ1.root");
-  TFile *b2=new TFile("../data/background/ttW_np1_410067_bkg_2016_25nsTOPQ1.root");
-  TFile *b3=new TFile("../data/background/ttW_np2_410068_bkg_2016_25nsTOPQ1.root");
-  TFile *b4=new TFile("../data/background/ttH.root"); 
-  TFile *b5=new TFile("../data/background/VV.root"); 
-  TFile *b6=new TFile("../data/background/VVV.root"); 
+  // TFile *b1=new TFile("../data/background/ttW_np0_410066_bkg_2016_25nsTOPQ1.root");
+  // TFile *b2=new TFile("../data/background/ttW_np1_410067_bkg_2016_25nsTOPQ1.root");
+  // TFile *b3=new TFile("../data/background/ttW_np2_410068_bkg_2016_25nsTOPQ1.root");
+  // TFile *b4=new TFile("../data/background/ttH.root"); 
+  // TFile *b5=new TFile("../data/background/VV.root"); 
+  // TFile *b6=new TFile("../data/background/VVV.root"); 
   //==============================================================================
 
+  //Data path
+  const char* PATH=getenv("MCDATA");
+  std::cout<<"\nThe data file path is: "<<PATH<<std::endl;
+  
+  //Signal
+  TFile *s1=new TFile(PATH+
+		      "signals/BBS_M800_302490_SSsig_deterre_Apr2017_36p1ifb_25nsTOPQ1_eLHM.root");
+  TFile *b1=new TFile(PATH+"diboson_llll_361063_SSbkg_deterre_Apr2017_36p1ifb_25nsTOPQ1_eLHM.root");
+
+  
   gnr(s1,"BBS_sig.root");
   delete s1;
 
   gnr(b1,"ttW_np0_bkg.root");
   delete b1;
 
-  gnr(b2,"ttW_np1_bkg.root");
-  delete b2;
+  // gnr(b2,"ttW_np1_bkg.root");
+  // delete b2;
 
-  gnr(b3,"ttW_np2_bkg.root");
-  delete b3; 
+  // gnr(b3,"ttW_np2_bkg.root");
+  // delete b3; 
 
-  gnr(b4,"ttH.root");
-  delete b4;
+  // gnr(b4,"ttH.root");
+  // delete b4;
 
-  gnr(b5,"VV.root");
-  delete b5;
+  // gnr(b5,"VV.root");
+  // delete b5;
  
-  gnr(b6,"VVV.root");
-  delete b6;
+  // gnr(b6,"VVV.root");
+  // delete b6;
 
 
 }
