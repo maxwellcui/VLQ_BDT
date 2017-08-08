@@ -8,6 +8,8 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include<cstdlib>
+#include<iostream>
+#include<cstdlib>
 
 void gnr(TFile* inputFile,TString outputName)
 {
@@ -199,7 +201,7 @@ void gnrTree()
   //==============================================================================
 
   //Data path
-  const char* PATH=getenv("MCDATA");
+  const std::string* PATH=getenv("MCDATA");
   std::cout<<"\nThe data file path is: "<<PATH<<std::endl;
   
   //Signal
