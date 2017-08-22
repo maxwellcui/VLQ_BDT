@@ -3,6 +3,7 @@
 //Physics department, Unversity of Arizona
 
 #include "iostream"
+#include "fstream"
 
 #include "TFile.h"
 #include "TTree.h"
@@ -39,13 +40,22 @@ int bdt_vlq()
   TString fBkg_ttW_np0="../normalization/ttW_np0_bkg.root";
   TString fBkg_ttH="../normalization/ttH.root";
 
-  TFile *inputSig=TFile::Open(fSig);
-  TFile *inputVV=TFile::Open(fBkg_VV);
-  TFile *inputVVV=TFile::Open(fBkg_VVV);
-  TFile *inputNP2=TFile::Open(fBkg_ttW_np2);
-  TFile *inputNP1=TFile::Open(fBkg_ttW_np1);
-  TFile *inputNP0=TFile::Open(fBkg_ttW_np0);
-  TFile *inputttH=TFile::Open(fBkg_ttH);
+  std::ifstream inputFile("datafiles.txt");
+  std::string fileName;
+
+  while(std::getline(inputFile,fileName))
+    {
+      TFile *inputBg=TFile::Open(fileName);
+    }
+
+  //---
+  // TFile *inputSig=TFile::Open(fSig);
+  // TFile *inputVV=TFile::Open(fBkg_VV);
+  // TFile *inputVVV=TFile::Open(fBkg_VVV);
+  // TFile *inputNP2=TFile::Open(fBkg_ttW_np2);
+  // TFile *inputNP1=TFile::Open(fBkg_ttW_np1);
+  // TFile *inputNP0=TFile::Open(fBkg_ttW_np0);
+  // TFile *inputttH=TFile::Open(fBkg_ttH);
 
   TTree *signal=(TTree*)inputSig->Get("nominal_Loose");
   TTree *vv=(TTree*)inputVV->Get("nominal_Loose");
@@ -64,13 +74,13 @@ int bdt_vlq()
   factory->AddVariable("jet_pt.[0]",'F');
   factory->AddVariable("met_met",'F');
   factory->AddVariable("met_phi",'F');
-  factory->AddVariable("SSee",'I');
-  factory->AddVariable("SSem",'I');
-  factory->AddVariable("SSmm",'I');
-  factory->AddVariable("eee",'I');
-  factory->AddVariable("eem",'I');
-  factory->AddVariable("emm",'I');
-  factory->AddVariable("mmm",'I');
+  factory->AddVariable("SSee_2016",'I');
+  factory->AddVariable("SSem_2016",'I');
+  factory->AddVariable("SSmm_2016",'I');
+  factory->AddVariable("eee_2016",'I');
+  factory->AddVariable("eem_2016",'I');
+  factory->AddVariable("emm_2016",'I');
+  factory->AddVariable("mmm_2016",'I');
   factory->AddVariable("lep_pt.[0]",'I');
   factory->AddVariable("ht",'F');
   factory->AddVariable("met_sumet",'F');
@@ -95,15 +105,15 @@ int bdt_vlq()
   Double_t ttW_np0Weight=1.0;
   Double_t ttHWeight=1.0;
 
-  factory->AddSignalTree(signal,signalWeight);
-  factory->AddBackgroundTree(vv,vvWeight);
-  factory->AddBackgroundTree(vvv,vvvWeight);
-  factory->AddBackgroundTree(ttW_np2,ttW_np2Weight);
-  factory->AddBackgroundTree(ttW_np1,ttW_np2Weight);
-  factory->AddBackgroundTree(ttW_np0,ttW_np2Weight);
-  factory->AddBackgroundTree(ttH,ttHWeight);
+  // factory->AddSignalTree(signal,signalWeight);
+  // factory->AddBackgroundTree(vv,vvWeight);
+  // factory->AddBackgroundTree(vvv,vvvWeight);
+  // factory->AddBackgroundTree(ttW_np2,ttW_np2Weight);
+  // factory->AddBackgroundTree(ttW_np1,ttW_np2Weight);
+  // factory->AddBackgroundTree(ttW_np0,ttW_np2Weight);
+  // factory->AddBackgroundTree(ttH,ttHWeight);
 
-  factory->SetWeightExpression("evtWeight");
+  // factory->SetWeightExpression("evtWeight");
 
   //Apply additional cuts on the signal and background samples
   TCut mycut="";
