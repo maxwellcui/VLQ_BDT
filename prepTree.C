@@ -12,7 +12,7 @@
 void create(TFile* inputTree, TString outputName)
 {
   TTree *oldTree=new TTree;
-  inputFile->GetObject("nominal_Loose",oldTree);
+  inputTree->GetObject("nominal_Loose",oldTree);
   
   //Deactive all branches
   oldTree->SetBranchStatus("*",0);
