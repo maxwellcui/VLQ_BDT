@@ -53,7 +53,7 @@ void create(TFile* inputTree, TString outputName)
   vector<float>   *el_pt;
   vector<float>   *mu_pt;
   vector<float>   *jet_pt;
-  vector<float>   *jet_mv2c20;
+  vector<float>   *jet_mv2c10;
   Float_t         met_met;
   Float_t         met_phi;
   Float_t         met_sumet;
@@ -73,7 +73,7 @@ void create(TFile* inputTree, TString outputName)
   TBranch        *b_el_pt;   //!
   TBranch        *b_mu_pt;   //!
   TBranch        *b_jet_pt;   //!
-  TBranch        *b_jet_mv2c20;   //!
+  TBranch        *b_jet_mv2c10;   //!
   TBranch        *b_met_met;   //!
   TBranch        *b_met_sumet;
   TBranch        *b_met_phi;   //!
@@ -92,7 +92,7 @@ void create(TFile* inputTree, TString outputName)
   el_pt = 0;
   mu_pt = 0;
   jet_pt = 0;
-  jet_mv2c20 = 0;
+  jet_mv2c10 = 0;
   lep_pt = 0;
   
   //Set branch addresses and brunch pointers
@@ -100,7 +100,7 @@ void create(TFile* inputTree, TString outputName)
   oldTree->SetBranchAddress("el_pt", &el_pt, &b_el_pt);
   oldTree->SetBranchAddress("mu_pt", &mu_pt, &b_mu_pt);
   oldTree->SetBranchAddress("jet_pt", &jet_pt, &b_jet_pt);
-  oldTree->SetBranchAddress("jet_mv2c20", &jet_mv2c20, &b_jet_mv2c20);
+  oldTree->SetBranchAddress("jet_mv2c10", &jet_mv2c10, &b_jet_mv2c10);
   oldTree->SetBranchAddress("met_met", &met_met, &b_met_met);
   oldTree->SetBranchAddress("met_phi", &met_phi, &b_met_phi);
   oldTree->SetBranchAddress("met_sumet", &met_sumet, &b_met_sumet);
