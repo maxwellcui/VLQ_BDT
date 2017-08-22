@@ -135,7 +135,7 @@ void create(TFile* inputTree, TString outputName)
       	      ///     if  (jet_mv2c10->at(ibjet) > 0.1758475) {  // 85% WP 
 	      if  (jet_mv2c10->at(ibjet) > 0.645925) {  // 77% WP
 		//if (jet_mv2c10->at(ibjet) > 0.8244273) {  // 70% WP
-		bjet_n++;
+		bjet++;
 	      }
 	      
       	    }
