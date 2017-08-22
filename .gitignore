@@ -1,15 +1,7 @@
 # Ignore some files
 
 *
-<<<<<<< HEAD
 !*.C
 !*.txt
 !*.md
 !makefile
-=======
-
-!*.C
-!makefile
-!*.md
-!*.txt
->>>>>>> 3c263df7919f5db250841cfb9b41b9aaef8c4253
