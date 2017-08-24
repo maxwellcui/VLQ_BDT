@@ -162,7 +162,7 @@ void prepTree()
   std::string dataPATH=std::getenv(envName);
   
   std::ifstream inputFile("datafiles.txt");
-  std::string fileName;
+  TString fileName;
 
   while(std::getline(inputFile,fileName))
     {
