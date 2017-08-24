@@ -143,6 +143,33 @@ void create(TFile* inputTree, TString outputName)
       bjetBranch->Fill();
     }
 
+  //Working with normalization  
+  //
+  Float_t lumi=36.1;   
+
+  //Declare leaf and branch
+  Float_t         weight_mc;
+  TBranch        *b_weight_mc;
+
+  //Set branch addresses and brunch pointers
+  oldTree->SetBranchAddress("weight_mc", &weight_mc, &b_weight_mc);
+
+  //Get the data...algrithm is from Prof. Varnes
+  TH1F *lumInt=new TH1F;
+  inputFile->GetObject("hIntLum",lumInt);
+  Float_t mcnorm=lumInt->GetBinContent(1);
+  
+  //Declare variable for event weight
+  Float_t evtWeight;
+  TBranch *ewBranch=newTree->Branch("evtWeight",&evtWeight,"evtWeight/F");
+
+  for(Int_t i=0;i<nentries;i++)
+    {
+      oldTree->GetEntry(i);
+      evtWeight=weight_mc*lumi/mcnorm;
+      ewBranch->Fill();
+    }
+    
   newTree->Print();
   newTree->Write();
 
