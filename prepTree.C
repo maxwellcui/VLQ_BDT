@@ -35,7 +35,7 @@ void create(TFile* inputTree, TString outputName)
   oldTree->SetBranchStatus("mmm_2016",1);
   oldTree->SetBranchStatus("lep_pt",1);
   oldTree->SetBranchStatus("jet_mv2c10",1);   //Using MV2c10 for b-tagging
-  //oldTree->SetBranchStatus("weight_mc",1);
+  oldTree->SetBranchStatus("weight_mc",1);
 
   //====================Output file==========================
   //
@@ -133,41 +133,59 @@ void create(TFile* inputTree, TString outputName)
       	  for(unsigned int ibjet=0;ibjet<jet_mv2c10->size();ibjet++)
       	    {
       	      ///     if  (jet_mv2c10->at(ibjet) > 0.1758475) {  // 85% WP 
-	      if  (jet_mv2c10->at(ibjet) > 0.645925) {  // 77% WP
-		//if (jet_mv2c10->at(ibjet) > 0.8244273) {  // 70% WP
+	      if  (jet_mv2c10->at(ibjet) > 0.645925) 
+		{  // 77% WP
+		  //if (jet_mv2c10->at(ibjet) > 0.8244273) {  // 70% WP
 		bjet++;
-	      }
-	      
+		}      
       	    }
       	}
       bjetBranch->Fill();
     }
-
+  
   //Working with normalization  
   //
   Float_t lumi=36.1;   
 
   //Declare leaf and branch
   Float_t         weight_mc;
+  Float_t         weight_jvt;
+  Float_t         weight_leptonSF_tightLeps;
+  Float_t         weight_indiv_SF_MU_TTVA;
+  Float_t         weight_pileup;
+  Float_t         weight_bTagSF_77;
+
   TBranch        *b_weight_mc;
+  TBranch        *b_weight_jvt;
+  TBranch        *b_weight_leptonSF_tightLeps;
+  TBranch        *b_weight_indiv_SF_MU_TTVA;
+  TBranch        *b_weight_pileup;
+  TBranch        *b_weight_bTagSF_77;
 
   //Set branch addresses and brunch pointers
   oldTree->SetBranchAddress("weight_mc", &weight_mc, &b_weight_mc);
+  oldTree->SetBranchAddress("weight_jvt", &weight_jvt, &b_weight_jvt);
+  oldTree->SetBranchAddress("weight_leptonSF_tightLeps", &weight_leptonSF_tightLeps, &b_weight_leptonSF_tightLeps);
+  oldTree->SetBranchAddress("weight_indiv_SF_MU_TTVA", &weight_indiv_SF_MU_TTVA, &b_weight_indiv_SF_MU_TTVA);
+  oldTree->SetBranchAddress("weight_pileup", &weight_pileup, &b_weight_pileup);
+  oldTree->SetBranchAddress("weight_bTagSF_77", &weight_bTagSF_77, &b_weight_bTagSF_77);
+
+  
 
   //Get the data...algrithm is from Prof. Varnes
   TH1F *lumInt=new TH1F;
-  inputFile->GetObject("hIntLum",lumInt);
+  inputTree->GetObject("hIntLum",lumInt);
   Float_t mcnorm=lumInt->GetBinContent(1);
   
   //Declare variable for event weight
   Float_t evtWeight;
-  TBranch *ewBranch=newTree->Branch("evtWeight",&evtWeight,"evtWeight/F");
+  TBranch *evtBranch=newTree->Branch("evtWeight",&evtWeight,"evtWeight/F");
 
   for(Int_t i=0;i<nentries;i++)
     {
       oldTree->GetEntry(i);
-      evtWeight=weight_mc*lumi/mcnorm;
-      ewBranch->Fill();
+      evtWeight=weight_mc*weight_jvt*(weight_leptonSF_tightLeps/weight_indiv_SF_MU_TTVA)*weight_pileup*weight_bTagSF_77*lumi/mcnorm;
+      evtBranch->Fill();
     }
     
   newTree->Print();
@@ -187,25 +205,39 @@ void prepTree()
   
   const char* envName="MCDATA";
   std::string dataPATH=std::getenv(envName);
+  if(dataPATH.empty())
+    {
+      std::cout<<"No such a variable";
+    }
+  else
+    {
+      std::cout<<"The variable contains: "<<dataPATH<<std::endl;
+    }
   
   std::ifstream inputFile("datafiles.txt");
-  TString fileName;
+  std::string fileName;
 
   while(std::getline(inputFile,fileName))
     {
-      std::cout<<"Readig file: "<<dataPATH+fileName<<std::endl;
-      TString combine;
-      combine=dataPATH+fileName;
-      if(!combine)
+      TString fullInput;
+      fullInput=dataPATH+"/"+fileName;
+      // std::cout<<"Readig file: "<<fullInput<<std::endl;
+
+      TString outputName;
+      outputName="normalized_"+fileName;
+      // std::cout<<"\tOutput file is: "<<outputName<<std::endl;
+
+      if(TFile *bg=new TFile(fullInput))
 	{
-	  std::cout<<"No file: "<<combine<<std::endl;
+	  create(bg,outputName);
+	  delete bg;
 	}
       else
 	{
-	  TFile *bg=new TFile(combine);
-	  create(bg,fileName);
-	  delete bg;
+	  continue;
 	}
+
+	  
     }
   inputFile.close();
 }
