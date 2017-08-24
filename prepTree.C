@@ -196,9 +196,16 @@ void prepTree()
       std::cout<<"Readig file: "<<dataPATH+fileName<<std::endl;
       TString combine;
       combine=dataPATH+fileName;
-      TFile *bg=new TFile(combine);
-      create(bg,fileName);
-      delete bg;
+      if(!combine)
+	{
+	  std::cout<<"No file: "<<combine<<std::endl;
+	}
+      else
+	{
+	  TFile *bg=new TFile(combine);
+	  create(bg,fileName);
+	  delete bg;
+	}
     }
   inputFile.close();
 }
