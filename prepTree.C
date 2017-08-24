@@ -185,6 +185,7 @@ void create(TFile* inputTree, TString outputName)
     {
       oldTree->GetEntry(i);
       evtWeight=weight_mc*weight_jvt*(weight_leptonSF_tightLeps/weight_indiv_SF_MU_TTVA)*weight_pileup*weight_bTagSF_77*lumi/mcnorm;
+      std::cout<<"The event weight is: "<<evtWeight<<std::endl;
       evtBranch->Fill();
     }
     
