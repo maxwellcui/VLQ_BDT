@@ -179,16 +179,19 @@ void create(TFile* inputTree, TString outputName)
   
   //Declare variable for event weight
   Float_t evtWeight;
-  TBranch *evtBranch=newTree->Branch("evtWeight",&evtWeight,"evtWeight/F");
+  TBranch *evtBranch=newTree->Branch("evtWeight",&evtWeight,"evtWeight/D");
+
+  std::cout<<"mcnorm is: "<<mcnorm<<std::endl;
 
   for(Int_t i=0;i<nentries;i++)
     {
       oldTree->GetEntry(i);
       evtWeight=weight_mc*weight_jvt*(weight_leptonSF_tightLeps/weight_indiv_SF_MU_TTVA)*weight_pileup*weight_bTagSF_77*lumi/mcnorm;
-      std::cout<<"The event weight is: "<<evtWeight<<std::endl;
+      //std::cout<<"The event weight is: "<<evtWeight<<std::endl;
       evtBranch->Fill();
     }
-    
+
+  newTree->Fill();
   newTree->Print();
   newTree->Write();
 
@@ -228,16 +231,10 @@ void prepTree()
       TString outputName;
       outputName="normalized_"+fileName;
 
-      if(TFile *bg=new TFile(fullInput))
-	{
-	  create(bg,outputName);
-	  delete bg;
-	}
-      else
-	{
-	  continue;
-	}
-
+      TFile *bg=new TFile(fullInput);
+      create(bg,outputName);
+      delete bg;
+	  
 	  
     }
   inputFile.close();
