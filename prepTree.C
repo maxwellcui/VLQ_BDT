@@ -127,7 +127,7 @@ void create(TFile* inputTree, TString outputName)
   for(Int_t i=0;i<nentries;i++)
     {
       oldTree->GetEntry(i);
-      bj=0;
+      bjet=0;
       if(SSee_2016 || SSem_2016 || SSmm_2016 || eee_2016 || eem_2016 || emm_2016 || mmm_2016)
       	{
       	  for(unsigned int ibjet=0;ibjet<jet_mv2c10->size();ibjet++)
