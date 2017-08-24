@@ -194,6 +194,7 @@ void create(TFile* inputTree, TString outputName)
   outputFile->Close();
   
   delete oldTree;
+  delete lumInt;
 }
 
 void prepTree()
@@ -207,11 +208,11 @@ void prepTree()
   std::string dataPATH=std::getenv(envName);
   if(dataPATH.empty())
     {
-      std::cout<<"No such a variable";
+      std::cout<<"\tData path not found! Please make sure you export MCDATA which contains the path of data.\n";
     }
   else
     {
-      std::cout<<"The variable contains: "<<dataPATH<<std::endl;
+      std::cout<<"\tData path is: "<<dataPATH<<std::endl<<std::endl;
     }
   
   std::ifstream inputFile("datafiles.txt");
@@ -221,11 +222,10 @@ void prepTree()
     {
       TString fullInput;
       fullInput=dataPATH+"/"+fileName;
-      // std::cout<<"Readig file: "<<fullInput<<std::endl;
+      std::cout<<"Readig file: "<<fullInput<<std::endl;
 
       TString outputName;
       outputName="normalized_"+fileName;
-      // std::cout<<"\tOutput file is: "<<outputName<<std::endl;
 
       if(TFile *bg=new TFile(fullInput))
 	{
