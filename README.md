@@ -24,7 +24,7 @@ The raw data from the simulation contain lots of infromation that is not needed 
 - [x] normalization of event weight
 
 
-Variables that are included in training data (tick indicates in-use variables in training):
+Variables that are included in training data (tick indicates variables used in training):
 - [x] `mu`
 - [x] `el_pt`
 - [x] `mu_pt`
@@ -43,8 +43,15 @@ Variables that are included in training data (tick indicates in-use variables in
 - [x] `ht`
 - [x] `bj`
 - [x] `evWeight`
+
 - [ ] `jet_mv2c20` used for b-jet calculation
 - [ ] `weight_mc`  used for event weight normalization
+- [ ] `weight_jvt` used for event weight normalization
+- [ ] `weight_pileup` used for event weight normalization
+- [ ] `weight_leptonSF_tightLeps` used for event weight normalization
+- [ ] `weight_indiv_SF_MU_TTVA` used for event weight normalization
+- [ ] `weight_bTagSF_77` used for event weight normalization
+
 
 ### BDT Training
 Since TMVA is a tool kit from ROOT, the language of TMVA is C/C++ and works like the usual ROOT operation.
