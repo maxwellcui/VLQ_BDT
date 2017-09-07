@@ -44,7 +44,7 @@ Variables that are included in training data (tick indicates variables used in t
 - [x] `bj`
 - [x] `evWeight`
 
-- [ ] `jet_mv2c20` used for b-jet calculation
+- [ ] `jet_mv2c20` used for b-tagging
 - [ ] `weight_mc`  used for event weight normalization
 - [ ] `weight_jvt` used for event weight normalization
 - [ ] `weight_pileup` used for event weight normalization
