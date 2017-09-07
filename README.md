@@ -56,22 +56,3 @@ Variables that are included in training data (tick indicates variables used in t
 ### BDT Training
 Since TMVA is a tool kit from ROOT, the language of TMVA is C/C++ and works like the usual ROOT operation.
 
-*This version of the code is only a testing verson. Most of the parameters have not been adjusted yet. 
-Some preliminary results are included.*
-
-The verbose contains info that are useful. It can be found in here [`BDT_VLQ_data.log`](https://github.com/maxwellcui/VLQ_BDT/blob/master/BDT_VLQ_data.log)
-
-### Parameters in this training code
-All parameters are in default value
-
-- Number of trees: 800
-- Max depth: 3
-- Min node size 5%
-- Number of grid point: 20
-- Boost type: Ada boost
-
-![Input variables](https://github.com/maxwellcui/VLQ_BDT/blob/master/variables_id_c1.png)
-![Input variables](https://github.com/maxwellcui/VLQ_BDT/blob/master/variables_id_c2.png)
-![Input variables](https://github.com/maxwellcui/VLQ_BDT/blob/master/variables_id_c3.png)
-![mva_BDT](https://github.com/maxwellcui/VLQ_BDT/blob/master/mva_BDT.png)
-![overtrain](https://github.com/maxwellcui/VLQ_BDT/blob/master/overtrain_BDT.png)
