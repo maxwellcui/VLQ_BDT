@@ -1,7 +1,8 @@
 //A ROOT macro that prepares Tree for TMVA training
 //----------------------------------------------
 //Author: Maxwell Cui
-//Date: Aug 19, 2017
+//Created date: Aug 19, 2017
+//Latest modified: Sep 7, 2017
 //----------------------------------------------
 
 #include<iostream>
@@ -35,7 +36,13 @@ void create(TFile* inputTree, TString outputName)
   oldTree->SetBranchStatus("mmm_2016",1);
   oldTree->SetBranchStatus("lep_pt",1);
   oldTree->SetBranchStatus("jet_mv2c10",1);   //Using MV2c10 for b-tagging
+
   oldTree->SetBranchStatus("weight_mc",1);
+  oldTree->SetBranchStatus("weight_jvt",1);
+  oldTree->SetBranchStatus("weight_leptonSF_tightLeps",1);
+  oldTree->SetBranchStatus("weight_indiv_SF_MU_TTVA",1);
+  oldTree->SetBranchStatus("weight_pileup",1);
+  oldTree->SetBranchStatus("weight_bTagSF_77",1);
 
   //====================Output file==========================
   //
@@ -121,6 +128,7 @@ void create(TFile* inputTree, TString outputName)
   //Add new branch
   TBranch *bjetBranch=newTree->Branch("bjet",&bjet,"bjet/I");
 
+  //Get the number of events
   Int_t nentries=(Int_t)oldTree->GetEntries();
 
   //Calculate bjet, algorithm is provided by Prof. Varnes
@@ -179,16 +187,26 @@ void create(TFile* inputTree, TString outputName)
   
   //Declare variable for event weight
   Float_t evtWeight;
-  TBranch *evtBranch=newTree->Branch("evtWeight",&evtWeight,"evtWeight/D");
+  TBranch *evtBranch=newTree->Branch("evtWeight",&evtWeight,"evtWeight/F");
 
   std::cout<<"mcnorm is: "<<mcnorm<<std::endl;
 
   for(Int_t j=0;j<nentries;j++)
     {
       oldTree->GetEntry(j);
+
+      //Calculate event weight
       evtWeight=weight_mc*weight_jvt*(weight_leptonSF_tightLeps/weight_indiv_SF_MU_TTVA)*weight_pileup*weight_bTagSF_77*lumi/mcnorm;
-      std::cout<<"The weight_jvt is: "<<weight_jvt<<std::endl;
-      //std::cout<<"The event weight is: "<<evtWeight<<std::endl;
+      
+      std::cout<<std::endl;
+      // std::cout<<"The weight_jvt is: "<<weight_jvt<<std::endl;
+      // std::cout<<"The weight_mc is: "<<weight_mc<<std::endl;
+      // std::cout<<"The weight_pileup is: "<<weight_pileup<<std::endl;
+      // std::cout<<"The weight_indiv_SF_MU_TTVA is: "<<weight_indiv_SF_MU_TTVA<<std::endl;
+      // std::cout<<"The weight_bTagSF_77 is: "<<weight_bTagSF_77<<std::endl;
+      // std::cout<<"The weight_leptonSF_tightLeps is: "<<weight_leptonSF_tightLeps<<std::endl;
+      std::cout<<"The event weight is: "<<evtWeight<<std::endl;
+      
       evtBranch->Fill();
     }
 
