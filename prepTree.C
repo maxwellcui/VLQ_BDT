@@ -183,11 +183,11 @@ void create(TFile* inputTree, TString outputName)
 
   std::cout<<"mcnorm is: "<<mcnorm<<std::endl;
 
-  for(Int_t i=0;i<nentries;i++)
+  for(Int_t j=0;j<nentries;j++)
     {
-      oldTree->GetEntry(i);
+      oldTree->GetEntry(j);
       evtWeight=weight_mc*weight_jvt*(weight_leptonSF_tightLeps/weight_indiv_SF_MU_TTVA)*weight_pileup*weight_bTagSF_77*lumi/mcnorm;
-      std::cout<<"The weight_mc is: "<<weight_jvt<<std::endl;
+      std::cout<<"The weight_jvt is: "<<weight_jvt<<std::endl;
       //std::cout<<"The event weight is: "<<evtWeight<<std::endl;
       evtBranch->Fill();
     }
