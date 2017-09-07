@@ -32,20 +32,24 @@ int bdt_vlq()
 
   //Read training data
   //
-  TString fSig="../normalization/BBS_sig.root";
-  TString fBkg_VV="../normalization/VV.root";
-  TString fBkg_VVV="../normalization/VVV.root";
-  TString fBkg_ttW_np2="../normalization/ttW_np2_bkg.root";
-  TString fBkg_ttW_np1="../normalization/ttW_np1_bkg.root";
-  TString fBkg_ttW_np0="../normalization/ttW_np0_bkg.root";
-  TString fBkg_ttH="../normalization/ttH.root";
-
+  TString fSig;
+  TString fBkg;
+  TString prefix="normalized_";
+  
   std::ifstream inputFile("datafiles.txt");
   std::string fileName;
 
+  TFile *inputBg=new TFile[10];
+  TTree *bgTree=new TTree[10];
+  
+  Int_t counter=0;
+
   while(std::getline(inputFile,fileName))
     {
-      TFile *inputBg=TFile::Open(fileName);
+      fileName=prefix+fileName;
+      inputBg[counter]=new TFile::Open(fileName);
+      bgTree[counter]=(TTree*)inputBg[counter]->Get("nominal_Loose");
+      counter++;
     }
 
   //---
@@ -57,13 +61,13 @@ int bdt_vlq()
   // TFile *inputNP0=TFile::Open(fBkg_ttW_np0);
   // TFile *inputttH=TFile::Open(fBkg_ttH);
 
-  TTree *signal=(TTree*)inputSig->Get("nominal_Loose");
-  TTree *vv=(TTree*)inputVV->Get("nominal_Loose");
-  TTree *vvv=(TTree*)inputVVV->Get("nominal_Loose");
-  TTree *ttW_np2=(TTree*)inputNP2->Get("nominal_Loose");
-  TTree *ttW_np1=(TTree*)inputNP1->Get("nominal_Loose");
-  TTree *ttW_np0=(TTree*)inputNP0->Get("nominal_Loose");
-  TTree *ttH=(TTree*)inputttH->Get("nominal_Loose");
+  // TTree *signal=(TTree*)inputSig->Get("nominal_Loose");
+  // TTree *vv=(TTree*)inputVV->Get("nominal_Loose");
+  // TTree *vvv=(TTree*)inputVVV->Get("nominal_Loose");
+  // TTree *ttW_np2=(TTree*)inputNP2->Get("nominal_Loose");
+  // TTree *ttW_np1=(TTree*)inputNP1->Get("nominal_Loose");
+  // TTree *ttW_np0=(TTree*)inputNP0->Get("nominal_Loose");
+  // TTree *ttH=(TTree*)inputttH->Get("nominal_Loose");
 
   std::cout<<"File operation done"<<std::endl;
 
@@ -84,26 +88,25 @@ int bdt_vlq()
   factory->AddVariable("lep_pt.[0]",'I');
   factory->AddVariable("ht",'F');
   factory->AddVariable("met_sumet",'F');
-  factory->AddVariable("bj",'I');
+  factory->AddVariable("bjet",'I');
 
-  std::cout<<" --- BDT_VLQ\tUsing input file: "
-	   <<"\n\t"
-	   <<inputSig->GetName()<<"\n\t"
-	   <<inputVV->GetName()<<"\n\t"
-	   <<inputVVV->GetName()<<"\n\t"
-	   <<inputNP2->GetName()<<"\n\t"
-	   <<inputNP1->GetName()<<"\n\t"
-	   <<inputNP0->GetName()<<"\n\t"
-	   <<inputttH->GetName()<<std::endl;
+  for(Int_t n=0;n<10;n++)
+    {
+      std::cout<<" --- BDT_VLQ\tUsing input file: "
+	       <<"\n\t"
+	       <<inputBg[n]->GetName()<<"\n\t"
+	       <<std::endl;
+    }
+
 
   //Global event weights per tree
-  Double_t signalWeight=1.0;
-  Double_t vvWeight=1.0;
-  Double_t vvvWeight=1.0;
-  Double_t ttW_np2Weight=1.0;
-  Double_t ttW_np1Weight=1.0;
-  Double_t ttW_np0Weight=1.0;
-  Double_t ttHWeight=1.0;
+  // Double_t signalWeight=1.0;
+  // Double_t vvWeight=1.0;
+  // Double_t vvvWeight=1.0;
+  // Double_t ttW_np2Weight=1.0;
+  // Double_t ttW_np1Weight=1.0;
+  // Double_t ttW_np0Weight=1.0;
+  // Double_t ttHWeight=1.0;
 
   // factory->AddSignalTree(signal,signalWeight);
   // factory->AddBackgroundTree(vv,vvWeight);
@@ -113,7 +116,7 @@ int bdt_vlq()
   // factory->AddBackgroundTree(ttW_np0,ttW_np2Weight);
   // factory->AddBackgroundTree(ttH,ttHWeight);
 
-  // factory->SetWeightExpression("evtWeight");
+  factory->SetWeightExpression("evtWeight");
 
   //Apply additional cuts on the signal and background samples
   TCut mycut="";
