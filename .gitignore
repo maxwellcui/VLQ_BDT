@@ -5,4 +5,4 @@
 !*.txt
 !*.md
 !makefile
-!/normalized_data/*
+!/normalized_data/
