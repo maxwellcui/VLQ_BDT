@@ -34,7 +34,7 @@ Variables that are included in training data (tick indicates variables used in t
 - [x] `met_sumet`
 - [x] `SSee`
 - [x] `SSmm`
-- [x] `Sem`
+- [x] `SSem`
 - [x] `eee`
 - [x] `eem`
 - [x] `emm`
