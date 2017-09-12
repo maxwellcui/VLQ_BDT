@@ -2,7 +2,7 @@
 //----------------------------------------------
 //Author: Maxwell Cui
 //Created date: Aug 19, 2017
-//Latest modified: Sep 7, 2017
+//Latest modified: Sep 12, 2017
 //----------------------------------------------
 
 #include<iostream>
@@ -187,7 +187,10 @@ void create(TFile* inputTree, TString outputName)
   
   //Declare variable for event weight
   Float_t evtWeight;
+  //Float_t globalWeight;
   TBranch *evtBranch=newTree->Branch("evtWeight",&evtWeight,"evtWeight/F");
+  //TBranch *gblBranch=newTree->Branch("globalWeight",&globalWeight,"globalWeight/F");
+  //globalWeight=0;
 
   std::cout<<"mcnorm is: "<<mcnorm<<std::endl;
 
@@ -206,10 +209,10 @@ void create(TFile* inputTree, TString outputName)
       // std::cout<<"The weight_bTagSF_77 is: "<<weight_bTagSF_77<<std::endl;
       // std::cout<<"The weight_leptonSF_tightLeps is: "<<weight_leptonSF_tightLeps<<std::endl;
       std::cout<<"The event weight is: "<<evtWeight<<std::endl;
-      
+      //globalWeight+=evtWeight;
       evtBranch->Fill();
     }
-
+  //gblBranch->Fill();
   newTree->Fill();
   newTree->Print();
   newTree->Write();
