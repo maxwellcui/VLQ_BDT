@@ -9,3 +9,4 @@
 !dataPreparation/*
 !training/
 !training/*
+*.tar
