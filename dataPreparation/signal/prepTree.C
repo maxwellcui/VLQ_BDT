@@ -257,7 +257,7 @@ void prepTree(char* argv)
   while(std::getline(inputFile,fileName))
     {
       TString fullInput;
-      fullInput=dataPATH+fileName;
+      fullInput=dataPATH+"signals/"+fileName;
       std::cout<<"Readig file: "<<fullInput<<std::endl;
 
       TString outputName;
