@@ -9,6 +9,16 @@
 #include<cstdlib>
 #include<string>
 #include<fstream>
+#include<vector>
+
+#include "TFile.h"
+#include "TTree.h"
+#include "TString.h"
+#include "TObjString.h"
+#include "TSystem.h"
+#include "TROOT.h"
+#include "TH1F.h"
+
 
 void create(TFile* inputTree, TString outputName)
 {
@@ -49,18 +59,18 @@ void create(TFile* inputTree, TString outputName)
   TFile *outputFile=new TFile(outputName,"recreate");
   //  
   //=========================================================
-
-  //Copy to new tree
+ 
+ //Copy to new tree
   TTree *newTree=oldTree->CloneTree();
 
   //Working with b-jet
   //
   // Declaration of leaf types
   Float_t         mu;
-  vector<float>   *el_pt;
-  vector<float>   *mu_pt;
-  vector<float>   *jet_pt;
-  vector<float>   *jet_mv2c10;
+  std::vector<float>   *el_pt;
+  std::vector<float>   *mu_pt;
+  std::vector<float>   *jet_pt;
+  std::vector<float>   *jet_mv2c10;
   Float_t         met_met;
   Float_t         met_phi;
   Float_t         met_sumet;
@@ -71,7 +81,7 @@ void create(TFile* inputTree, TString outputName)
   Int_t           eem_2016;
   Int_t           emm_2016;
   Int_t           mmm_2016;
-  vector<float>   *lep_pt;
+  std::vector<float>   *lep_pt;
   Float_t         ht;
 
  
@@ -223,7 +233,7 @@ void create(TFile* inputTree, TString outputName)
   delete lumInt;
 }
 
-void prepTree()
+void prepTree(char* argv)
 {
 
   //Variable 'envName' can be the environmental variable on the system that
@@ -240,14 +250,14 @@ void prepTree()
     {
       std::cout<<"\tData path is: "<<dataPATH<<std::endl<<std::endl;
     }
-  
-  std::ifstream inputFile("datafiles.txt");
+  std::string dlist(argv);
+  std::ifstream inputFile(dlist);
   std::string fileName;
 
   while(std::getline(inputFile,fileName))
     {
       TString fullInput;
-      fullInput=dataPATH+"/"+fileName;
+      fullInput=dataPATH+fileName;
       std::cout<<"Readig file: "<<fullInput<<std::endl;
 
       TString outputName;
@@ -260,4 +270,17 @@ void prepTree()
 	  
     }
   inputFile.close();
+}
+
+int main(int argc, char **argv)
+{
+  if(argc<=1)
+    {
+      std::cout<<"Please select the datalist.\n";
+      exit(1);
+    }
+  else if(argc=2)
+    {
+      prepTree(argv[1]);
+    }
 }

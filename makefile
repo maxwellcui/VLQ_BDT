@@ -1,6 +1,6 @@
 #Compiling the program
 
-BINS = bdt_vlq
+BINS = prepTree
 
 CXX = g++
 CCFLAGS = -O0 -ggdb -std=c++11 
