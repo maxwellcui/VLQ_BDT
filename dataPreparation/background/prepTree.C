@@ -2,7 +2,7 @@
 //----------------------------------------------
 //Author: Maxwell Cui
 //Created date: Aug 19, 2017
-//Latest modified: Sep 25, 2017
+//Latest modified: Oct 17, 2017
 //----------------------------------------------
 
 #include<iostream>
@@ -223,13 +223,15 @@ void create(TFile* inputTree, TString outputName)
       evtBranch->Fill();
     }
   //gblBranch->Fill();
+
+  delete oldTree;
   newTree->Fill();
   newTree->Print();
   newTree->Write();
 
   outputFile->Close();
   
-  delete oldTree;
+
   delete lumInt;
 }
 
