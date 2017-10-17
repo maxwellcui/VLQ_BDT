@@ -211,14 +211,14 @@ void create(TFile* inputTree, TString outputName)
       //Calculate event weight
       evtWeight=weight_mc*weight_jvt*(weight_leptonSF_tightLeps/weight_indiv_SF_MU_TTVA)*weight_pileup*weight_bTagSF_77*lumi/mcnorm;
       
-      std::cout<<std::endl;
+      //std::cout<<std::endl;
       // std::cout<<"The weight_jvt is: "<<weight_jvt<<std::endl;
       // std::cout<<"The weight_mc is: "<<weight_mc<<std::endl;
       // std::cout<<"The weight_pileup is: "<<weight_pileup<<std::endl;
       // std::cout<<"The weight_indiv_SF_MU_TTVA is: "<<weight_indiv_SF_MU_TTVA<<std::endl;
       // std::cout<<"The weight_bTagSF_77 is: "<<weight_bTagSF_77<<std::endl;
       // std::cout<<"The weight_leptonSF_tightLeps is: "<<weight_leptonSF_tightLeps<<std::endl;
-      std::cout<<"The event weight is: "<<evtWeight<<std::endl;
+      //std::cout<<"The event weight is: "<<evtWeight<<std::endl;
       //globalWeight+=evtWeight;
       evtBranch->Fill();
     }
