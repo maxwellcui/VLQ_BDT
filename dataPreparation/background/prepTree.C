@@ -281,7 +281,7 @@ int main(int argc, char **argv)
       std::cout<<"Please select the datalist.\n";
       exit(1);
     }
-  else if(argc=2)
+  else if(argc==2)
     {
       prepTree(argv[1]);
     }
