@@ -30,6 +30,27 @@ int bdt_vlq()
   TMVA::Factory *factory=new TMVA::Factory("BDT_VLQ", outputFile,
 					   "V:!Silent:Color:DrawProgressBar:AnalysisType=Classification");
 
+
+  //Add variables that will be used for MVA training
+  factory->AddVariable("mu",'F');
+  factory->AddVariable("el_pt.[0]",'F');
+  factory->AddVariable("mu_pt.[0]",'F');
+  factory->AddVariable("jet_pt.[0]",'F');
+  factory->AddVariable("met_met",'F');
+  factory->AddVariable("met_phi",'F');
+  factory->AddVariable("SSee_2016",'I');
+  factory->AddVariable("SSem_2016",'I');
+  factory->AddVariable("SSmm_2016",'I');
+  factory->AddVariable("eee_2016",'I');
+  factory->AddVariable("eem_2016",'I');
+  factory->AddVariable("emm_2016",'I');
+  factory->AddVariable("mmm_2016",'I');
+  factory->AddVariable("lep_pt.[0]",'I');
+  factory->AddVariable("ht",'F');
+  factory->AddVariable("met_sumet",'F');
+  factory->AddVariable("bjet",'I');
+
+
   //Read training data
   //
   TString fSig;
@@ -71,24 +92,6 @@ int bdt_vlq()
 
   std::cout<<"File operation done"<<std::endl;
 
-  //Add variables that will be used for MVA training
-  factory->AddVariable("mu",'F');
-  factory->AddVariable("el_pt.[0]",'F');
-  factory->AddVariable("mu_pt.[0]",'F');
-  factory->AddVariable("jet_pt.[0]",'F');
-  factory->AddVariable("met_met",'F');
-  factory->AddVariable("met_phi",'F');
-  factory->AddVariable("SSee_2016",'I');
-  factory->AddVariable("SSem_2016",'I');
-  factory->AddVariable("SSmm_2016",'I');
-  factory->AddVariable("eee_2016",'I');
-  factory->AddVariable("eem_2016",'I');
-  factory->AddVariable("emm_2016",'I');
-  factory->AddVariable("mmm_2016",'I');
-  factory->AddVariable("lep_pt.[0]",'I');
-  factory->AddVariable("ht",'F');
-  factory->AddVariable("met_sumet",'F');
-  factory->AddVariable("bjet",'I');
 
   for(Int_t n=0;n<10;n++)
     {
