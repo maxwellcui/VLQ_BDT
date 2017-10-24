@@ -39,7 +39,7 @@ int bdt_vlq()
   //Add variables that will be used for MVA training
   factory->AddVariable("mu",'F');
   factory->AddVariable("el_pt.[0]",'F');
-  factory->AddVariable("mu_pt.[1]",'F');
+  factory->AddVariable("mu_pt.[0]",'F');
   factory->AddVariable("jet_pt.[0]",'F');
   factory->AddVariable("met_met",'F');
   factory->AddVariable("met_phi",'F');
