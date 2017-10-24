@@ -2,6 +2,11 @@
 //Author: Zhaoyuan "Maxwell" Cui
 //Physics department, Unversity of Arizona
 
+
+/*------------------------------------------------------*\
+|This code is designed for Vector-like B pair production |
+\*----------------------------------------------------- */
+
 #include "iostream"
 #include "fstream"
 
@@ -23,7 +28,7 @@ int bdt_vlq()
   std::cout<<std::endl;
   std::cout<<"==>Start BDT"<<std::endl;
 
-  TString outputFileName("BDT_VLQ_data.root");
+  TString outputFileName("BDT_VLQ_BB.root");
   TFile *outputFile=TFile::Open(outputFileName, "RECREATE");
   
   //Register TMVA Factory
@@ -34,7 +39,7 @@ int bdt_vlq()
   //Add variables that will be used for MVA training
   factory->AddVariable("mu",'F');
   factory->AddVariable("el_pt.[0]",'F');
-  factory->AddVariable("mu_pt.[0]",'F');
+  factory->AddVariable("mu_pt.[1]",'F');
   factory->AddVariable("jet_pt.[0]",'F');
   factory->AddVariable("met_met",'F');
   factory->AddVariable("met_phi",'F');
@@ -53,73 +58,30 @@ int bdt_vlq()
 
   //Read training data
   //
-  TString fSig;
-  TString fBkg;
-  TString prefix="normalized_";
-  
-  std::ifstream inputFile("datafiles.txt");
-  std::string fileName;
+  // --- Signal
+  TString fSig="../../dataPreparation/signal/normalized_BBS_M1000_302494_SSsig_deterre_Apr2017_36p1ifb_25nsTOPQ1_eLHM.root"; 
+  TFile *inputBB=TFile::Open(fSig);
+  TTree *signal=(TTree*)inputBB->Get("nominal_Loose");
 
-  TFile *inputBg=new TFile[10];
-  TTree *bgTree=new TTree[10];
-  
-  Int_t counter=0;
+  // --- Background
+  TString fBkg="../../dataPreparation/background/normalized_ttW_np0_410066_SSbkg_deterre_Apr2017_36p1ifb_25nsTOPQ1_eLHM.root";
+  TFile *inputBkg=TFile::Open(fBkg);
+  TTree *ttW_np0=(TTree*)inputBkg->Get("nominal_Loose");
 
-  while(std::getline(inputFile,fileName))
-    {
-      fileName=prefix+fileName;
-      inputBg[counter]=new TFile::Open(fileName);
-      bgTree[counter]=(TTree*)inputBg[counter]->Get("nominal_Loose");
-      counter++;
-    }
-
-  //---
-  // TFile *inputSig=TFile::Open(fSig);
-  // TFile *inputVV=TFile::Open(fBkg_VV);
-  // TFile *inputVVV=TFile::Open(fBkg_VVV);
-  // TFile *inputNP2=TFile::Open(fBkg_ttW_np2);
-  // TFile *inputNP1=TFile::Open(fBkg_ttW_np1);
-  // TFile *inputNP0=TFile::Open(fBkg_ttW_np0);
-  // TFile *inputttH=TFile::Open(fBkg_ttH);
-
-  // TTree *signal=(TTree*)inputSig->Get("nominal_Loose");
-  // TTree *vv=(TTree*)inputVV->Get("nominal_Loose");
-  // TTree *vvv=(TTree*)inputVVV->Get("nominal_Loose");
-  // TTree *ttW_np2=(TTree*)inputNP2->Get("nominal_Loose");
-  // TTree *ttW_np1=(TTree*)inputNP1->Get("nominal_Loose");
-  // TTree *ttW_np0=(TTree*)inputNP0->Get("nominal_Loose");
-  // TTree *ttH=(TTree*)inputttH->Get("nominal_Loose");
 
   std::cout<<"File operation done"<<std::endl;
 
 
-  for(Int_t n=0;n<10;n++)
-    {
-      std::cout<<" --- BDT_VLQ\tUsing input file: "
-	       <<"\n\t"
-	       <<inputBg[n]->GetName()<<"\n\t"
-	       <<std::endl;
-    }
-
 
   //Global event weights per tree
-  // Double_t signalWeight=1.0;
-  // Double_t vvWeight=1.0;
-  // Double_t vvvWeight=1.0;
-  // Double_t ttW_np2Weight=1.0;
-  // Double_t ttW_np1Weight=1.0;
-  // Double_t ttW_np0Weight=1.0;
-  // Double_t ttHWeight=1.0;
+  Double_t signalWeight=1.0;
+  Double_t ttW_np0Weight=1.0;
 
-  // factory->AddSignalTree(signal,signalWeight);
-  // factory->AddBackgroundTree(vv,vvWeight);
-  // factory->AddBackgroundTree(vvv,vvvWeight);
-  // factory->AddBackgroundTree(ttW_np2,ttW_np2Weight);
-  // factory->AddBackgroundTree(ttW_np1,ttW_np2Weight);
-  // factory->AddBackgroundTree(ttW_np0,ttW_np2Weight);
-  // factory->AddBackgroundTree(ttH,ttHWeight);
+  factory->AddSignalTree(signal,signalWeight);
+  factory->SetSignalWeightExpression("evtWeight");
 
-  factory->SetWeightExpression("evtWeight");
+  factory->AddBackgroundTree(ttW_np0,ttW_np0Weight);
+  factory->SetBackgroundWeightExpression("evtWeight");
 
   //Apply additional cuts on the signal and background samples
   TCut mycut="";
@@ -128,16 +90,13 @@ int bdt_vlq()
   // --- Book MVA method
   //
   //Boosted Decision Tree
+  TString Option="!H:!V:NTrees=850:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20"; 
 
-  //TString Option="!H:!V:NTrees=400:MaxDepth=10:MinNodeSize=5%:nCuts=20:NegWeightTreatment=IgnoreNegWeightsInTraining:SeparationType=GiniIndex:BoostType=AdaBoost:VarTransform=Decorrelate";
-  
-  //TString Option="!H:!V:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex";
-
-  TString Option="!H:!V:NTrees=400:MinNodeSize=5%:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:VarTransform=Decorrelate"; 
-
+  //Book training method
   factory->BookMethod( TMVA::Types::kBDT, "BDT",
 		       Option);
 
+  //Train and evaluate
   factory->TrainAllMethods();
   factory->TestAllMethods();
   factory->EvaluateAllMethods();
