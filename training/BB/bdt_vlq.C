@@ -9,6 +9,7 @@
 
 #include "iostream"
 #include "fstream"
+#include "string"
 
 #include "TFile.h"
 #include "TTree.h"
@@ -42,7 +43,7 @@ int bdt_vlq()
   factory->AddVariable("mu_pt.[0]",'F');
   factory->AddVariable("jet_pt.[0]",'F');
   factory->AddVariable("met_met",'F');
-  factory->AddVariable("met_phi",'F');
+  //  factory->AddVariable("met_phi",'F');
   factory->AddVariable("SSee_2016",'I');
   factory->AddVariable("SSem_2016",'I');
   factory->AddVariable("SSmm_2016",'I');
@@ -55,6 +56,10 @@ int bdt_vlq()
   factory->AddVariable("met_sumet",'F');
   factory->AddVariable("bjet",'I');
 
+  //Global event weights per tree
+  Double_t signalWeight=1.0;
+  Double_t backgroundWeight=1.0;
+
 
   //Read training data
   //
@@ -62,26 +67,48 @@ int bdt_vlq()
   TString fSig="../../dataPreparation/signal/normalized_BBS_M1000_302494_SSsig_deterre_Apr2017_36p1ifb_25nsTOPQ1_eLHM.root"; 
   TFile *inputBB=TFile::Open(fSig);
   TTree *signal=(TTree*)inputBB->Get("nominal_Loose");
+  factory->AddSignalTree(signal,signalWeight);
+  factory->SetSignalWeightExpression("evtWeight");
 
   // --- Background
-  TString fBkg="../../dataPreparation/background/normalized_ttW_np0_410066_SSbkg_deterre_Apr2017_36p1ifb_25nsTOPQ1_eLHM.root";
-  TFile *inputBkg=TFile::Open(fBkg);
-  TTree *ttW_np0=(TTree*)inputBkg->Get("nominal_Loose");
+  std::ifstream list;
+  list.open("../../dataPreparation/background/backgroundList.txt");
+  if(!list)
+    {
+      std::cout<<"No such a file!\n";
+      exit(1);
+    }
+  std::string fileName;
+  std::vector <std::string> fileList;
+  Int_t counter=0;
+  while(list>>fileName)
+    {
+      fileList.push_back(fileName);
+      counter++;
+    }
+  list.close();
+  for(int i=0;i<counter;i++)
+    {
+      std::cout<<fileList[i]<<std::endl;
+    }
+  std::cout<<"There are total "<<counter<<" backgroud files.\n";
 
+  TString prefix="../../dataPreparation/background/normalized_";
+  TString fullName;
+  for(int i=0; i<counter;i++)
+    {
+      fullName=prefix+fileList[i];
+      TFile *inputBkg=TFile::Open(fullName);
+      TTree *bkgTree=(TTree*)inputBkg->Get("nominal_Loose");
+      factory->AddBackgroundTree(bkgTree,backgroundWeight);
+      factory->SetBackgroundWeightExpression("evtWeight");
+    }
 
   std::cout<<"File operation done"<<std::endl;
 
 
 
-  //Global event weights per tree
-  Double_t signalWeight=1.0;
-  Double_t ttW_np0Weight=1.0;
 
-  factory->AddSignalTree(signal,signalWeight);
-  factory->SetSignalWeightExpression("evtWeight");
-
-  factory->AddBackgroundTree(ttW_np0,ttW_np0Weight);
-  factory->SetBackgroundWeightExpression("evtWeight");
 
   //Apply additional cuts on the signal and background samples
   TCut mycut="";
