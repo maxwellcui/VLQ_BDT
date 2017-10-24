@@ -29,7 +29,7 @@ int bdt_vlq()
   std::cout<<std::endl;
   std::cout<<"==>Start BDT"<<std::endl;
 
-  TString outputFileName("BDT_VLQ_BB.root");
+  TString outputFileName("BDT_VLQ_TT.root");
   TFile *outputFile=TFile::Open(outputFileName, "RECREATE");
   
   //Register TMVA Factory
