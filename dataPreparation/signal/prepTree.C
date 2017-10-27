@@ -157,8 +157,8 @@ void create(TFile* inputTree, TString outputName)
 		bjet++;
 		}      
       	    }
-      	}
-      bjetBranch->Fill();
+	  bjetBranch->Fill();
+	}
     }
   
   //Working with normalization  
