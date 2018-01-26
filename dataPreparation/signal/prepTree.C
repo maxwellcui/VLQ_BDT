@@ -2,7 +2,7 @@
 //----------------------------------------------
 //Author: Maxwell Cui
 //Created date: Aug 19, 2017
-//Latest modified: Sep 25, 2017
+//Latest modified: Jan 25, 2018
 //----------------------------------------------
 
 #include<iostream>
@@ -29,30 +29,12 @@ void create(TFile* inputTree, TString outputName)
   oldTree->SetBranchStatus("*",0);
 
   //Active the interested branches 
+  //Training variables
   oldTree->SetBranchStatus("ht",1);
   oldTree->SetBranchStatus("met_met",1);
   oldTree->SetBranchStatus("met_sumet",1);
-  oldTree->SetBranchStatus("mu_pt",1);
-  oldTree->SetBranchStatus("el_pt",1);
-  oldTree->SetBranchStatus("mu",1);
   oldTree->SetBranchStatus("jet_pt",1);
-  oldTree->SetBranchStatus("met_phi",1);
-  oldTree->SetBranchStatus("SSee_2016",1);
-  oldTree->SetBranchStatus("SSmm_2016",1);
-  oldTree->SetBranchStatus("SSem_2016",1);
-  oldTree->SetBranchStatus("eee_2016",1);
-  oldTree->SetBranchStatus("eem_2016",1);
-  oldTree->SetBranchStatus("emm_2016",1);
-  oldTree->SetBranchStatus("mmm_2016",1);
   oldTree->SetBranchStatus("lep_pt",1);
-  oldTree->SetBranchStatus("jet_mv2c10",1);   //Using MV2c10 for b-tagging
-
-  oldTree->SetBranchStatus("weight_mc",1);
-  oldTree->SetBranchStatus("weight_jvt",1);
-  oldTree->SetBranchStatus("weight_leptonSF_tightLeps",1);
-  oldTree->SetBranchStatus("weight_indiv_SF_MU_TTVA",1);
-  oldTree->SetBranchStatus("weight_pileup",1);
-  oldTree->SetBranchStatus("weight_bTagSF_77",1);
 
   //====================Output file==========================
   //
@@ -60,19 +42,35 @@ void create(TFile* inputTree, TString outputName)
   //  
   //=========================================================
  
- //Copy to new tree
+  //Copy to new tree
   TTree *newTree=oldTree->CloneTree();
+
+  //b-tagging
+  oldTree->SetBranchStatus("SSee_2016",1);
+  oldTree->SetBranchStatus("SSmm_2016",1);
+  oldTree->SetBranchStatus("SSem_2016",1);
+  oldTree->SetBranchStatus("eee_2016",1);
+  oldTree->SetBranchStatus("eem_2016",1);
+  oldTree->SetBranchStatus("emm_2016",1);
+  oldTree->SetBranchStatus("mmm_2016",1);
+  oldTree->SetBranchStatus("jet_mv2c10",1);   //Using MV2c10 for b-tagging
+
+  //event weight
+  oldTree->SetBranchStatus("weight_mc",1);
+  oldTree->SetBranchStatus("weight_jvt",1);
+  oldTree->SetBranchStatus("weight_leptonSF_tightLeps",1);
+  oldTree->SetBranchStatus("weight_indiv_SF_MU_TTVA",1);
+  oldTree->SetBranchStatus("weight_pileup",1);
+  oldTree->SetBranchStatus("weight_bTagSF_77",1);
+
+
 
   //Working with b-jet
   //
   // Declaration of leaf types
-  Float_t         mu;
-  std::vector<float>   *el_pt;
-  std::vector<float>   *mu_pt;
   std::vector<float>   *jet_pt;
   std::vector<float>   *jet_mv2c10;
   Float_t         met_met;
-  Float_t         met_phi;
   Float_t         met_sumet;
   Int_t           SSee_2016;
   Int_t           SSmm_2016;
@@ -86,14 +84,10 @@ void create(TFile* inputTree, TString outputName)
 
  
   // List of branches
-  TBranch        *b_mu;   //!
-  TBranch        *b_el_pt;   //!
-  TBranch        *b_mu_pt;   //!
   TBranch        *b_jet_pt;   //!
   TBranch        *b_jet_mv2c10;   //!
   TBranch        *b_met_met;   //!
   TBranch        *b_met_sumet;
-  TBranch        *b_met_phi;   //!
   TBranch        *b_SSee_2016;   //!
   TBranch        *b_SSmm_2016;   //!
   TBranch        *b_SSem_2016;   //!
@@ -106,20 +100,14 @@ void create(TFile* inputTree, TString outputName)
 
 
   //Set object pointer
-  el_pt = 0;
-  mu_pt = 0;
   jet_pt = 0;
   jet_mv2c10 = 0;
   lep_pt = 0;
   
   //Set branch addresses and brunch pointers
-  oldTree->SetBranchAddress("mu", &mu, &b_mu);
-  oldTree->SetBranchAddress("el_pt", &el_pt, &b_el_pt);
-  oldTree->SetBranchAddress("mu_pt", &mu_pt, &b_mu_pt);
   oldTree->SetBranchAddress("jet_pt", &jet_pt, &b_jet_pt);
   oldTree->SetBranchAddress("jet_mv2c10", &jet_mv2c10, &b_jet_mv2c10);
   oldTree->SetBranchAddress("met_met", &met_met, &b_met_met);
-  oldTree->SetBranchAddress("met_phi", &met_phi, &b_met_phi);
   oldTree->SetBranchAddress("met_sumet", &met_sumet, &b_met_sumet);
   oldTree->SetBranchAddress("SSee_2016", &SSee_2016, &b_SSee_2016);
   oldTree->SetBranchAddress("SSmm_2016", &SSmm_2016, &b_SSmm_2016);
