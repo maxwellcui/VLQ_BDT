@@ -29,8 +29,8 @@ Variables that are included in training data file (tick indicates variables used
 - [x] `met_sumet`
 - [x] `lep_pt`
 - [x] `ht`
-- [x] `bj`
-- [ ] `evWeight`
+- [x] `bjet`
+- [ ] `evtWeight`
 
 ### BDT Training
 Since TMVA is a tool kit from ROOT, the language of TMVA is C/C++ and works like the usual ROOT operation.
