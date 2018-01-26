@@ -36,14 +36,9 @@ void create(TFile* inputTree, TString outputName)
   oldTree->SetBranchStatus("jet_pt",1);
   oldTree->SetBranchStatus("lep_pt",1);
 
-  //====================Output file==========================
-  //
+  //Output file
   TFile *outputFile=new TFile(outputName,"recreate");
-  //  
-  //=========================================================
- 
-  //Copy to new tree
-  TTree *newTree=oldTree->CloneTree();
+  TTree *newTree=oldTree->CloneTree(0);
 
   //b-tagging
   oldTree->SetBranchStatus("SSee_2016",1);
@@ -62,6 +57,7 @@ void create(TFile* inputTree, TString outputName)
   oldTree->SetBranchStatus("weight_indiv_SF_MU_TTVA",1);
   oldTree->SetBranchStatus("weight_pileup",1);
   oldTree->SetBranchStatus("weight_bTagSF_77",1);
+
 
 
 
@@ -126,29 +122,6 @@ void create(TFile* inputTree, TString outputName)
   //Add new branch
   TBranch *bjetBranch=newTree->Branch("bjet",&bjet,"bjet/I");
 
-  //Get the number of events
-  Int_t nentries=(Int_t)oldTree->GetEntries();
-
-  //Calculate bjet, algorithm is provided by Prof. Varnes
-  for(Int_t i=0;i<nentries;i++)
-    {
-      oldTree->GetEntry(i);
-      bjet=0;
-      if(SSee_2016 || SSem_2016 || SSmm_2016 || eee_2016 || eem_2016 || emm_2016 || mmm_2016)
-      	{
-      	  for(unsigned int ibjet=0;ibjet<jet_mv2c10->size();ibjet++)
-      	    {
-      	      ///     if  (jet_mv2c10->at(ibjet) > 0.1758475) {  // 85% WP 
-	      if  (jet_mv2c10->at(ibjet) > 0.645925) 
-		{  // 77% WP
-		  //if (jet_mv2c10->at(ibjet) > 0.8244273) {  // 70% WP
-		bjet++;
-		}      
-      	    }
-	  bjetBranch->Fill();
-	}
-    }
-  
   //Working with normalization  
   //
   Float_t lumi=36.1;   
@@ -192,26 +165,32 @@ void create(TFile* inputTree, TString outputName)
 
   std::cout<<"mcnorm is: "<<mcnorm<<std::endl;
 
-  for(Int_t j=0;j<nentries;j++)
-    {
-      oldTree->GetEntry(j);
+  //Get the number of events
+  Int_t nentries=(Int_t)oldTree->GetEntries();
 
-      //Calculate event weight
-      evtWeight=weight_mc*weight_jvt*(weight_leptonSF_tightLeps/weight_indiv_SF_MU_TTVA)*weight_pileup*weight_bTagSF_77*lumi/mcnorm;
+  //Calculate bjet, algorithm is provided by Prof. Varnes
+  for(Int_t i=0;i<nentries;i++)
+    {
+      oldTree->GetEntry(i);
+      bjet=0;
+
+      //Pre-selection criteria
+      if(SSee_2016 || SSem_2016 || SSmm_2016 || eee_2016 || eem_2016 || emm_2016 || mmm_2016)
+      	{
+      	  for(unsigned int ibjet=0;ibjet<jet_mv2c10->size();ibjet++)
+      	    {
+	      if  (jet_mv2c10->at(ibjet) > 0.645925) 
+		{  // 77% WP
+		  bjet++;
+		}      
+      	    }
+	  evtWeight=weight_mc*weight_jvt*(weight_leptonSF_tightLeps/weight_indiv_SF_MU_TTVA)*weight_pileup*weight_bTagSF_77*lumi/mcnorm;
+	  //bjetBranch->Fill();
+	  newTree->Fill();
+	}
       
-      //std::cout<<std::endl;
-      // std::cout<<"The weight_jvt is: "<<weight_jvt<<std::endl;
-      // std::cout<<"The weight_mc is: "<<weight_mc<<std::endl;
-      // std::cout<<"The weight_pileup is: "<<weight_pileup<<std::endl;
-      // std::cout<<"The weight_indiv_SF_MU_TTVA is: "<<weight_indiv_SF_MU_TTVA<<std::endl;
-      // std::cout<<"The weight_bTagSF_77 is: "<<weight_bTagSF_77<<std::endl;
-      // std::cout<<"The weight_leptonSF_tightLeps is: "<<weight_leptonSF_tightLeps<<std::endl;
-      //std::cout<<"The event weight is: "<<evtWeight<<std::endl;
-      //globalWeight+=evtWeight;
-      evtBranch->Fill();
     }
-  //gblBranch->Fill();
-  newTree->Fill();
+  
   newTree->Print();
   newTree->Write();
 
@@ -227,7 +206,7 @@ void prepTree(char* argv)
   //Variable 'envName' can be the environmental variable on the system that
   //includes the path to the directory of the data files.
   //Please make sure that the variable is exported.
-  
+    
   const char* envName="MCDATA";
   std::string dataPATH=std::getenv(envName);
   if(dataPATH.empty())
@@ -238,16 +217,17 @@ void prepTree(char* argv)
     {
       std::cout<<"\tData path is: "<<dataPATH<<std::endl<<std::endl;
     }
+  
   std::string dlist(argv);
   std::ifstream inputFile(dlist);
   std::string fileName;
-
+  
   while(std::getline(inputFile,fileName))
     {
       TString fullInput;
       fullInput=dataPATH+"signals/"+fileName;
       std::cout<<"Readig file: "<<fullInput<<std::endl;
-
+      
       TString outputName;
       outputName="normalized_"+fileName;
 
