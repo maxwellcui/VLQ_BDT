@@ -10,3 +10,5 @@
 !training/
 !training/*
 *.tar
+!meeting_note/
+!meeting_note/*
