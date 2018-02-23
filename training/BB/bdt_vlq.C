@@ -38,19 +38,8 @@ int bdt_vlq()
 
 
   //Add variables that will be used for MVA training
-  factory->AddVariable("mu",'F');
-  factory->AddVariable("el_pt.[0]",'F');
-  factory->AddVariable("mu_pt.[0]",'F');
   factory->AddVariable("jet_pt.[0]",'F');
   factory->AddVariable("met_met",'F');
-  //  factory->AddVariable("met_phi",'F');
-  factory->AddVariable("SSee_2016",'I');
-  factory->AddVariable("SSem_2016",'I');
-  factory->AddVariable("SSmm_2016",'I');
-  factory->AddVariable("eee_2016",'I');
-  factory->AddVariable("eem_2016",'I');
-  factory->AddVariable("emm_2016",'I');
-  factory->AddVariable("mmm_2016",'I');
   factory->AddVariable("lep_pt.[0]",'I');
   factory->AddVariable("ht",'F');
   factory->AddVariable("met_sumet",'F');
@@ -66,7 +55,7 @@ int bdt_vlq()
   // --- Signal
   TString fSig="../../dataPreparation/signal/normalized_BBS_M1000_302494_SSsig_deterre_Apr2017_36p1ifb_25nsTOPQ1_eLHM.root"; 
   TFile *inputBB=TFile::Open(fSig);
-  TTree *signal=(TTree*)inputBB->Get("nominal_Loose");
+  TTree *signal=(TTree*)inputBB->Get("trainingTree");
   factory->AddSignalTree(signal,signalWeight);
   factory->SetSignalWeightExpression("evtWeight");
 
@@ -99,7 +88,7 @@ int bdt_vlq()
     {
       fullName=prefix+fileList[i];
       TFile *inputBkg=TFile::Open(fullName);
-      TTree *bkgTree=(TTree*)inputBkg->Get("nominal_Loose");
+      TTree *bkgTree=(TTree*)inputBkg->Get("trainingTree");
       factory->AddBackgroundTree(bkgTree,backgroundWeight);
       factory->SetBackgroundWeightExpression("evtWeight");
     }
