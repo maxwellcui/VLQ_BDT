@@ -2,7 +2,6 @@
 //----------------------------------------------
 //Author: Maxwell Cui
 //Created date: Aug 19, 2017
-//Latest modified: Oct 17, 2017
 //----------------------------------------------
 
 #include<iostream>

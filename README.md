@@ -22,9 +22,9 @@ The raw data from the simulation contain lots of infromation that is not needed 
 Variables that are included in training data file (tick indicates variables used as training input):
 - [x] `jet_pt`
 - [x] `met_met`
-- [x] `met_sumet`
+- [x] `met_sumet` Scale sum of ET
 - [x] `lep_pt`
-- [x] `ht`
+- [x] `ht` Total visible transverse momentum
 - [x] `bjet`
 - [ ] `evtWeight`
 
