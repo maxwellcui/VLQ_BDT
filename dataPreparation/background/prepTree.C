@@ -40,7 +40,6 @@ void create(TFile* inputTree, TString outputName)
   //====================Output file==========================
   TFile *outputFile=new TFile(outputName,"recreate");
   TTree *newTree=oldTree->CloneTree(0);
-  newTree->SetName("trainingTree");
 
   //b-tagging
   oldTree->SetBranchStatus("SSee_2016",1);
@@ -191,16 +190,14 @@ void create(TFile* inputTree, TString outputName)
       if(bjet!=0)
 	{
 	  evtWeight=weight_mc*weight_jvt*(weight_leptonSF_tightLeps/weight_indiv_SF_MU_TTVA)*weight_pileup*weight_bTagSF_77*lumi/mcnorm;
-	  //bjetBranch->Fill();
-	  //evtBranch->Fill();
 	  newTree->Fill();
 	}
     
     }
 
-
+  newTree->Write("trainingTree",TObject::kOverwrite);
   newTree->Print();
-  newTree->Write();
+
 
   outputFile->Close();
   
