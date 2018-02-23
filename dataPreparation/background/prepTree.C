@@ -40,6 +40,7 @@ void create(TFile* inputTree, TString outputName)
   //====================Output file==========================
   TFile *outputFile=new TFile(outputName,"recreate");
   TTree *newTree=oldTree->CloneTree(0);
+  newTree->SetName("trainingTree");
 
   //b-tagging
   oldTree->SetBranchStatus("SSee_2016",1);
@@ -195,7 +196,7 @@ void create(TFile* inputTree, TString outputName)
     
     }
 
-  newTree->Write("trainingTree",TObject::kOverwrite);
+  newTree->Write(0,TObject::kOverwrite);
   newTree->Print();
 
 
