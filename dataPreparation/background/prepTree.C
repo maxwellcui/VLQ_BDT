@@ -28,15 +28,21 @@ void create(TFile* inputTree, TString outputName)
   //Deactive all branches
   oldTree->SetBranchStatus("*",0);
 
-  //Active the interested branches 
+  //Active the interested branches
+ 
+  //Variables for training
   oldTree->SetBranchStatus("ht",1);
   oldTree->SetBranchStatus("met_met",1);
   oldTree->SetBranchStatus("met_sumet",1);
-  oldTree->SetBranchStatus("mu_pt",1);
-  oldTree->SetBranchStatus("el_pt",1);
-  oldTree->SetBranchStatus("mu",1);
   oldTree->SetBranchStatus("jet_pt",1);
-  oldTree->SetBranchStatus("met_phi",1);
+  oldTree->SetBranchStatus("lep_pt",1);
+
+  //====================Output file==========================
+  TFile *outputFile=new TFile(outputName,"recreate");
+  TTree *newTree=oldTree->CloneTree(0);
+  newTree->SetName("trainingTree");
+
+  //b-tagging
   oldTree->SetBranchStatus("SSee_2016",1);
   oldTree->SetBranchStatus("SSmm_2016",1);
   oldTree->SetBranchStatus("SSem_2016",1);
@@ -44,9 +50,9 @@ void create(TFile* inputTree, TString outputName)
   oldTree->SetBranchStatus("eem_2016",1);
   oldTree->SetBranchStatus("emm_2016",1);
   oldTree->SetBranchStatus("mmm_2016",1);
-  oldTree->SetBranchStatus("lep_pt",1);
   oldTree->SetBranchStatus("jet_mv2c10",1);   //Using MV2c10 for b-tagging
 
+  //event weight calculation
   oldTree->SetBranchStatus("weight_mc",1);
   oldTree->SetBranchStatus("weight_jvt",1);
   oldTree->SetBranchStatus("weight_leptonSF_tightLeps",1);
@@ -54,25 +60,15 @@ void create(TFile* inputTree, TString outputName)
   oldTree->SetBranchStatus("weight_pileup",1);
   oldTree->SetBranchStatus("weight_bTagSF_77",1);
 
-  //====================Output file==========================
-  //
-  TFile *outputFile=new TFile(outputName,"recreate");
-  //  
-  //=========================================================
  
- //Copy to new tree
-  TTree *newTree=oldTree->CloneTree();
+
 
   //Working with b-jet
   //
   // Declaration of leaf types
-  Float_t         mu;
-  std::vector<float>   *el_pt;
-  std::vector<float>   *mu_pt;
   std::vector<float>   *jet_pt;
   std::vector<float>   *jet_mv2c10;
   Float_t         met_met;
-  Float_t         met_phi;
   Float_t         met_sumet;
   Int_t           SSee_2016;
   Int_t           SSmm_2016;
@@ -83,17 +79,12 @@ void create(TFile* inputTree, TString outputName)
   Int_t           mmm_2016;
   std::vector<float>   *lep_pt;
   Float_t         ht;
-
  
   // List of branches
-  TBranch        *b_mu;   //!
-  TBranch        *b_el_pt;   //!
-  TBranch        *b_mu_pt;   //!
   TBranch        *b_jet_pt;   //!
   TBranch        *b_jet_mv2c10;   //!
   TBranch        *b_met_met;   //!
   TBranch        *b_met_sumet;
-  TBranch        *b_met_phi;   //!
   TBranch        *b_SSee_2016;   //!
   TBranch        *b_SSmm_2016;   //!
   TBranch        *b_SSem_2016;   //!
@@ -104,22 +95,15 @@ void create(TFile* inputTree, TString outputName)
   TBranch        *b_lep_pt;   //!
   TBranch        *b_ht;   //!
 
-
   //Set object pointer
-  el_pt = 0;
-  mu_pt = 0;
   jet_pt = 0;
   jet_mv2c10 = 0;
   lep_pt = 0;
   
   //Set branch addresses and brunch pointers
-  oldTree->SetBranchAddress("mu", &mu, &b_mu);
-  oldTree->SetBranchAddress("el_pt", &el_pt, &b_el_pt);
-  oldTree->SetBranchAddress("mu_pt", &mu_pt, &b_mu_pt);
   oldTree->SetBranchAddress("jet_pt", &jet_pt, &b_jet_pt);
   oldTree->SetBranchAddress("jet_mv2c10", &jet_mv2c10, &b_jet_mv2c10);
   oldTree->SetBranchAddress("met_met", &met_met, &b_met_met);
-  oldTree->SetBranchAddress("met_phi", &met_phi, &b_met_phi);
   oldTree->SetBranchAddress("met_sumet", &met_sumet, &b_met_sumet);
   oldTree->SetBranchAddress("SSee_2016", &SSee_2016, &b_SSee_2016);
   oldTree->SetBranchAddress("SSmm_2016", &SSmm_2016, &b_SSmm_2016);
@@ -131,38 +115,7 @@ void create(TFile* inputTree, TString outputName)
   oldTree->SetBranchAddress("lep_pt", &lep_pt, &b_lep_pt);
   oldTree->SetBranchAddress("ht", &ht, &b_ht);
 
-
-  //Declare bjet variable
-  Int_t bjet;
-
-  //Add new branch
-  TBranch *bjetBranch=newTree->Branch("bjet",&bjet,"bjet/I");
-
-  //Get the number of events
-  Int_t nentries=(Int_t)oldTree->GetEntries();
-
-  //Calculate bjet, algorithm is provided by Prof. Varnes
-  for(Int_t i=0;i<nentries;i++)
-    {
-      oldTree->GetEntry(i);
-      bjet=0;
-      if(SSee_2016 || SSem_2016 || SSmm_2016 || eee_2016 || eem_2016 || emm_2016 || mmm_2016)
-      	{
-      	  for(unsigned int ibjet=0;ibjet<jet_mv2c10->size();ibjet++)
-      	    {
-      	      ///     if  (jet_mv2c10->at(ibjet) > 0.1758475) {  // 85% WP 
-	      if  (jet_mv2c10->at(ibjet) > 0.645925) 
-		{  // 77% WP
-		  //if (jet_mv2c10->at(ibjet) > 0.8244273) {  // 70% WP
-		bjet++;
-		}      
-      	    }
-	  bjetBranch->Fill();
-      	}
-    }
-  
   //Working with normalization  
-  //
   Float_t lumi=36.1;   
 
   //Declare leaf and branch
@@ -188,7 +141,6 @@ void create(TFile* inputTree, TString outputName)
   oldTree->SetBranchAddress("weight_pileup", &weight_pileup, &b_weight_pileup);
   oldTree->SetBranchAddress("weight_bTagSF_77", &weight_bTagSF_77, &b_weight_bTagSF_77);
 
-  
 
   //Get the data...algrithm is from Prof. Varnes
   TH1F *lumInt=new TH1F;
@@ -197,41 +149,62 @@ void create(TFile* inputTree, TString outputName)
   
   //Declare variable for event weight
   Float_t evtWeight;
-  //Float_t globalWeight;
+
+  //Branch for event weight
   TBranch *evtBranch=newTree->Branch("evtWeight",&evtWeight,"evtWeight/F");
-  //TBranch *gblBranch=newTree->Branch("globalWeight",&globalWeight,"globalWeight/F");
-  //globalWeight=0;
 
   std::cout<<"mcnorm is: "<<mcnorm<<std::endl;
 
-  for(Int_t j=0;j<nentries;j++)
+  //Declare bjet variable
+  Int_t bjet;
+  
+  //Branch of b-jet
+  TBranch *bjetBranch=newTree->Branch("bjet",&bjet,"bjet/I");
+  
+  //Get the number of events
+  Long64_t nentries=(Int_t)oldTree->GetEntries();
+
+  //Calculate eventWeight
+  //Calculate bjet, algorithm is provided by Prof. Varnes
+  for(Long64_t i=0;i<nentries;i++)
     {
-      oldTree->GetEntry(j);
+      //Get entry
+      oldTree->GetEntry(i);
+      bjet=0;                    //Initilization
 
-      //Calculate event weight
-      evtWeight=weight_mc*weight_jvt*(weight_leptonSF_tightLeps/weight_indiv_SF_MU_TTVA)*weight_pileup*weight_bTagSF_77*lumi/mcnorm;
+      //B-tagging
+      if(SSee_2016 || SSem_2016 || SSmm_2016 || eee_2016 || eem_2016 || emm_2016 || mmm_2016)
+      	{
+      	  for(unsigned int ibjet=0;ibjet<jet_mv2c10->size();ibjet++)
+      	    {
+      	      //0.1758475 85% WP
+	      //0.8244273 70% WP
+	      if  (jet_mv2c10->at(ibjet) > 0.645925)  // 77% WP 		 
+		{ 
+		  bjet++;
+		}      
+      	    }
+      	}
       
-      //std::cout<<std::endl;
-      // std::cout<<"The weight_jvt is: "<<weight_jvt<<std::endl;
-      // std::cout<<"The weight_mc is: "<<weight_mc<<std::endl;
-      // std::cout<<"The weight_pileup is: "<<weight_pileup<<std::endl;
-      // std::cout<<"The weight_indiv_SF_MU_TTVA is: "<<weight_indiv_SF_MU_TTVA<<std::endl;
-      // std::cout<<"The weight_bTagSF_77 is: "<<weight_bTagSF_77<<std::endl;
-      // std::cout<<"The weight_leptonSF_tightLeps is: "<<weight_leptonSF_tightLeps<<std::endl;
-      //std::cout<<"The event weight is: "<<evtWeight<<std::endl;
-      //globalWeight+=evtWeight;
-      evtBranch->Fill();
+      //Event weight calculation
+      //Calculate event weight
+      if(bjet!=0)
+	{
+	  evtWeight=weight_mc*weight_jvt*(weight_leptonSF_tightLeps/weight_indiv_SF_MU_TTVA)*weight_pileup*weight_bTagSF_77*lumi/mcnorm;
+	  //bjetBranch->Fill();
+	  //evtBranch->Fill();
+	  newTree->Fill();
+	}
+    
     }
-  //gblBranch->Fill();
 
-  delete oldTree;
-  newTree->Fill();
+
   newTree->Print();
   newTree->Write();
 
   outputFile->Close();
   
-
+  delete oldTree;
   delete lumInt;
 }
 
@@ -258,6 +231,7 @@ void prepTree(char* argv)
 
   while(std::getline(inputFile,fileName))
     {
+      //Create the full path to the data
       TString fullInput;
       fullInput=dataPATH+fileName;
       std::cout<<"Readig file: "<<fullInput<<std::endl;
