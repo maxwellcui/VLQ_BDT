@@ -230,7 +230,7 @@ void prepTree(char* argv)
     {
       //Create the full path to the data
       TString fullInput;
-      fullInput=dataPATH+fileName;
+      fullInput=dataPATH+"signals/"+fileName;
       std::cout<<"Readig file: "<<fullInput<<std::endl;
 
       TString outputName;
